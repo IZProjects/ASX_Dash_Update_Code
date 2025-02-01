@@ -47,7 +47,9 @@ try:
     write_df_tblName("real_time", df)
 
     logging.info("Data successfully written to the database.")
+    print("Data successfully written to the database.")
 
 except Exception as e:
     logging.error(f"An error has occurred: {e}", exc_info=True)
+    print(f"An error has occurred: {e}")
 

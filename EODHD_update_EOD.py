@@ -3,14 +3,27 @@ from datetime import datetime, timedelta
 import pytz
 from utils.EODHD_functions import get_weekly_data, get_monthly_data, get_historical_stock_data
 from utils.mysql_connect_funcs import write_df_tblName, get_df_tblName
+import logging
+
+# Configure logging
+logging.basicConfig(
+    filename="EODHD_update_EOD.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 # Suppress pandas SettingWithCopyWarning
 pd.options.mode.chained_assignment = None
 
+
 # Load stock tickers
-df_stocks = get_df_tblName("ticker_list")
-stocks = df_stocks['tickers'].to_list()
-stocks = [item + ".AU" for item in stocks]
+try:
+    df_stocks = get_df_tblName("ticker_list")
+    stocks = df_stocks['tickers'].to_list()
+    stocks = [item + ".AU" for item in stocks]
+except Exception as e:
+    logging.error(f"Error loading stock tickers: {e}", exc_info=True)
+    raise
 
 # Define date range
 from_date = "2000-01-01"
@@ -32,7 +45,6 @@ for stock in stocks:
         # Fetch historical stock data
         stock_data = get_historical_stock_data(stock, from_date, to_date)
         stockName = stock.replace(".", "_")
-        print(stock)
 
         # Daily data processing
         df_daily = stock_data[-260:] if len(stock_data) > 260 else stock_data
@@ -57,3 +69,6 @@ for stock in stocks:
 
     except Exception as e:
         print(f"{stock} failed with error: {e}")
+        logging.error(f"{stock} failed with error: {e}", exc_info=True)
+
+logging.info("run complete")

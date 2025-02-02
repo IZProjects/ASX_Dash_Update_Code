@@ -9,7 +9,7 @@ def flatten_columns(df):
 
 # Configure logging
 logging.basicConfig(
-    filename="EODHD_WLA.log",
+    filename="get_indicies_yfinance.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )

@@ -124,7 +124,6 @@ path = '../difference.csv'
 df_stocks = pd.read_csv('../difference.csv')
 stocks = df_stocks['tickers'].to_list()
 stocks = [item + ":AU" for item in stocks]
-stocks = stocks[0:2]
 
 # get individial statements
 fails = []

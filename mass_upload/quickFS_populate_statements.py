@@ -7,14 +7,6 @@ import pandas as pd
 from utils.quickFS_functions import get_metrics, get_financials
 from utils.mysql_connect_funcs import write_df_tblName, get_df_tblName
 pd.options.mode.chained_assignment = None  # default='warn'
-import logging
-
-# Configure logging
-logging.basicConfig(
-    filename="quickFS_populate.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
 
 #misc
 misc = ['Share Count', 'Dividends', 'Period End Price', 'Period End Date', 'Original Filing Date', 'Restated Filing Date', 'Preliminary']
@@ -125,7 +117,7 @@ statement_types = [('income_statement',IS), ('balance_sheet',BS), ('cash_flow_st
 supplementary_types = [('sup_IS',sup_IS), ('sup_BS',sup_BS), ('sup_CF',sup_CF), ('key_ratios',key_ratios), ('summary',summary)]
 period_types = ['annual', 'quarterly']
 
-path = '../difference.csv'
+path = 'difference.csv'
 df_stocks = pd.read_csv('../difference.csv')
 stocks = df_stocks['tickers'].to_list()
 stocks = [item + ":AU" for item in stocks]

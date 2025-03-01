@@ -1,3 +1,8 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import pandas as pd
 from utils.quickFS_functions import get_metrics, get_financials
 from utils.mysql_connect_funcs import write_df_tblName, get_df_tblName

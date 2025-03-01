@@ -117,8 +117,9 @@ statement_types = [('income_statement',IS), ('balance_sheet',BS), ('cash_flow_st
 supplementary_types = [('sup_IS',sup_IS), ('sup_BS',sup_BS), ('sup_CF',sup_CF), ('key_ratios',key_ratios), ('summary',summary)]
 period_types = ['annual', 'quarterly']
 
-path = 'difference.csv'
-df_stocks = pd.read_csv('../difference.csv')
+path = 'mass_upload/difference.csv'             # for vm use
+#path = 'difference.csv'                        # for pycharm use
+df_stocks = pd.read_csv(path)
 stocks = df_stocks['tickers'].to_list()
 stocks = [item + ":AU" for item in stocks]
 

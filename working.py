@@ -13,5 +13,5 @@ import re
 
 #print(get_df_tblName("announcements_today").at[0,'Document Name'])
 
-df = get_df_tblName("discovery_growthStory")
-print(df.at[0,'Story'])
+df = get_df_tblName("MMR_AU_daily")
+print(df)

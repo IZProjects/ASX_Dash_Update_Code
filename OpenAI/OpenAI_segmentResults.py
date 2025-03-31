@@ -1,3 +1,8 @@
+import sys
+import os
+parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(1, parent_path)  # caution: path[0] is reserved for script path (or '' in REPL)
+
 from utils.mysql_connect_funcs import get_df_tblName, write_df_tblName
 import os
 import pandas as pd

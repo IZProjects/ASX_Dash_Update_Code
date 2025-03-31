@@ -1,5 +1,10 @@
+import sys
+import os
+parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(1, parent_path)  # caution: path[0] is reserved for script path (or '' in REPL)
+
 from utils.ASX_functions import getAnnouncements
-from utils.mysql_connect_funcs import get_df_tblName, insert_row_FR, write_df_tblName, filter_table
+from utils.mysql_connect_funcs import get_df_tblName, write_df_tblName, filter_table
 from datetime import datetime
 import pytz
 import pandas as pd

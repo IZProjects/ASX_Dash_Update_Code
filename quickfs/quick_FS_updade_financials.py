@@ -1,7 +1,7 @@
 import sys
 import os
-app2_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.insert(1, app2_path)  # caution: path[0] is reserved for script path (or '' in REPL)
+parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(1, parent_path)  # caution: path[0] is reserved for script path (or '' in REPL)
 
 from utils.quickFS_functions import get_companies_new_updates, get_metrics, get_financials
 import pytz
@@ -13,7 +13,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 sydney_tz = pytz.timezone("Australia/Sydney")
 sydney_time = datetime.now(sydney_tz)
 sydney_time = sydney_time.strftime("%Y%m%d")
-stocks = get_companies_new_updates("20250127","AU")
+stocks = get_companies_new_updates(sydney_time,"AU")
 
 #misc
 misc = ['Share Count', 'Dividends', 'Period End Price', 'Period End Date', 'Original Filing Date', 'Restated Filing Date', 'Preliminary']

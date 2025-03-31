@@ -1,3 +1,8 @@
+import sys
+import os
+parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(1, parent_path)  # caution: path[0] is reserved for script path (or '' in REPL)
+
 from utils.mysql_connect_funcs import write_df_tblName
 from datetime import datetime
 import pytz
@@ -44,4 +49,4 @@ df = pd.DataFrame([{
     "Notes": "START OF DAY",
 
 }])
-write_df_tblName('insiderTrades_today', df)
+#write_df_tblName('insiderTrades_today', df)

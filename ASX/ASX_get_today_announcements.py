@@ -47,9 +47,10 @@ cols = ["Date", "Ticker"] + [col for col in df_combined.columns if col not in ["
 df_combined = df_combined[cols]
 write_df_tblName("announcements_today_wPrice", df_combined)
 
-for i in range(len(df_difference)):
+
+"""for i in range(len(df_difference)):
     ticker = df_difference.at[i, 'Ticker']
     row = df_difference.iloc[i].tolist()
     insert_row_FR(f"{ticker}_AU_announcements", row, ['Date', 'Links', 'Document Name', 'Ticker', 'Type'])
-
+"""
 

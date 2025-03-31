@@ -15,15 +15,21 @@ else:
     assistantID = "asst_JPa6tNP3ONOV40z3PgSEUz63"
     rows=[]
     for i in range(len(tickers)):
-        filtered_df = df_metadata[df_metadata['symbol'] == tickers[i]].reset_index(drop=True)
-        company_name = filtered_df['name'].iloc[0]
-        file_paths, years = get_files(docs_path, tickers[i])
-        for j in range(len(file_paths)):
-            prompt = "Summarise the all the updates and changes that happened to " + tickers[i] + '(' + company_name + ')' + " in " + years[j]
-            message = run_assistant(file_paths[j], prompt, assistantID)
-            ID = tickers[i] + '_' + years[j]
-            row = [ID, tickers[i], years[j], message]
-            rows.append(row)
+        try:
+            filtered_df = df_metadata[df_metadata['symbol'] == tickers[i]].reset_index(drop=True)
+            company_name = filtered_df['name'].iloc[0]
+            file_paths, years = get_files(docs_path, tickers[i])
+            for j in range(len(file_paths)):
+                try:
+                    prompt = "Summarise the all the updates and changes that happened to " + tickers[i] + '(' + company_name + ')' + " in " + years[j]
+                    message = run_assistant(file_paths[j], prompt, assistantID)
+                    ID = tickers[i] + '_' + years[j]
+                    row = [ID, tickers[i], years[j], message]
+                    rows.append(row)
+                except Exception as e:
+                    print(f"{tickers[i]} {years[j]} failed:{e}")
+        except Exception as e:
+            print(f"{tickers[i]} failed:{e}")
 
     df_history = pd.DataFrame(rows, columns=['ID', 'ticker', 'year', 'content'])
 
@@ -53,13 +59,19 @@ else:
     assistantID = 'asst_G7AiFsK5wxCbMRwOxizt4T2T'
     rows=[]
     for i in range(len(tickers)):
-        file_paths, years = get_files(docs_path, tickers[i])
-        for j in range(len(file_paths)):
-            prompt = "please extract the operating results for all the company's business segments"
-            message = run_assistant(file_paths[j], prompt, assistantID)
-            ID = tickers[i] + '_' + years[j]
-            row = [ID, tickers[i], years[j], message]
-            rows.append(row)
+        try:
+            file_paths, years = get_files(docs_path, tickers[i])
+            for j in range(len(file_paths)):
+                try:
+                    prompt = "please extract the operating results for all the company's business segments"
+                    message = run_assistant(file_paths[j], prompt, assistantID)
+                    ID = tickers[i] + '_' + years[j]
+                    row = [ID, tickers[i], years[j], message]
+                    rows.append(row)
+                except Exception as e:
+                    print(f"{tickers[i]} {years[j]} failed:{e}")
+        except Exception as e:
+            print(f"{tickers[i]} failed:{e}")
 
     df_segmentResults = pd.DataFrame(rows, columns=['ID', 'ticker', 'year', 'content'])
 
@@ -71,12 +83,18 @@ else:
     assistantID = 'asst_itFTGt6IWtVjfqCBrdVMfLdk'
     rows=[]
     for i in range(len(tickers)):
-        file_paths, years = get_files(docs_path, tickers[i])
-        for j in range(len(file_paths)):
-            prompt = "Please get a description of each of the business segments in the company based on the attached file. \n"
-            message = run_assistant(file_paths[j], prompt, assistantID)
-            row = [tickers[i], message]
-            rows.append(row)
+        try:
+            file_paths, years = get_files(docs_path, tickers[i])
+            for j in range(len(file_paths)):
+                try:
+                    prompt = "Please get a description of each of the business segments in the company based on the attached file. \n"
+                    message = run_assistant(file_paths[j], prompt, assistantID)
+                    row = [tickers[i], message]
+                    rows.append(row)
+                except Exception as e:
+                    print(f"{tickers[i]} {years[j]} failed:{e}")
+        except Exception as e:
+            print(f"{tickers[i]} failed:{e}")
 
     df_segmentDescription = pd.DataFrame(rows, columns=['ticker', 'content'])
 

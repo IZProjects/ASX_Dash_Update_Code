@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, inspect
 import pandas as pd
 from sqlalchemy.exc import SQLAlchemyError
 import os
@@ -225,3 +225,10 @@ def filter_table(table_name, column_name, values_list):
     finally:
         engine.dispose()
 
+
+def get_table_names():
+    connection_string = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(connection_string)
+
+    inspector = inspect(engine)
+    return inspector.get_table_names()

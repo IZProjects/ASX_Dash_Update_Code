@@ -6,14 +6,18 @@ sys.path.insert(1, parent_path)  # caution: path[0] is reserved for script path 
 from utils.quickFS_functions import get_companies_new_updates, get_metrics, get_financials
 import pytz
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 from utils.mysql_connect_funcs import write_df_tblName
 pd.options.mode.chained_assignment = None  # default='warn'
 
 sydney_tz = pytz.timezone("Australia/Sydney")
 sydney_time = datetime.now(sydney_tz)
-sydney_time = sydney_time.strftime("%Y%m%d")
-stocks = get_companies_new_updates(sydney_time,"AU")
+today = sydney_time.strftime("%Y%m%d")
+yesterday = (sydney_time - timedelta(days=1)).strftime("%Y%m%d")
+
+stocks_today = get_companies_new_updates(today,"AU")
+stocks_yesterday = get_companies_new_updates(yesterday,"AU")
+stocks = list(set(stocks_today + stocks_yesterday))
 
 #misc
 misc = ['Share Count', 'Dividends', 'Period End Price', 'Period End Date', 'Original Filing Date', 'Restated Filing Date', 'Preliminary']

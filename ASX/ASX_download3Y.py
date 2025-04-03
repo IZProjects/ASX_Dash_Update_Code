@@ -6,7 +6,6 @@ sys.path.insert(1, parent_path)  # caution: path[0] is reserved for script path 
 from utils.mysql_connect_funcs import get_df_tblName, insert_row_FR
 from utils.OpenAI_functions import run_assistant
 import pandas as pd
-import os
 import requests
 import time
 import re
@@ -14,6 +13,27 @@ from io import StringIO
 from datetime import datetime
 import pytz
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+proxy_host = os.getenv("proxy_host")
+proxy_port = os.getenv("proxy_port")
+proxy_user = os.getenv("proxy_user")
+proxy_pass = os.getenv("proxy_pass")
+
+proxy = f"{proxy_host}:{proxy_port}"
+proxy_auth = f"{proxy_user}:{proxy_pass}"
+
+proxies = {
+    'http': f'http://{proxy_auth}@{proxy}',
+    'https': f'http://{proxy_auth}@{proxy}'
+}
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+}
 
 def format_dollars(value):
   value = str(value)
@@ -63,22 +83,25 @@ df = df.reset_index(drop=True)
 path = '../Appendix_3Y/'
 
 if not df.empty:
-
   for i in range(len(df)):
     url = df.at[i,'Links']
-    response = requests.get(url)
-    symbol = df.at[i, 'Ticker']
-    if response.status_code == 200:
-      # Sanitize the name before using it in the file name
-      clean_name = sanitize_filename(df.at[i,"Document Name"])
-      cleaned_date = sanitize_filename(df.at[i,"Date"])
-      file_path = os.path.join(path, f"{i} {symbol} {cleaned_date} {clean_name}.pdf")
-      print(file_path + ' downloaded')
-      with open(file_path, "wb") as f:
-        f.write(response.content)
-    else:
-      print(f"{symbol} Appendix_3Y Failed to download PDF")
-    time.sleep(2)
+    try:
+      response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
+      response.raise_for_status()
+      symbol = df.at[i, 'Ticker']
+      if response.status_code == 200:
+        # Sanitize the name before using it in the file name
+        clean_name = sanitize_filename(df.at[i,"Document Name"])
+        cleaned_date = sanitize_filename(df.at[i,"Date"])
+        file_path = os.path.join(path, f"{i} {symbol} {cleaned_date} {clean_name}.pdf")
+        print(file_path + ' downloaded')
+        with open(file_path, "wb") as f:
+          f.write(response.content)
+      else:
+        print(f"{symbol} Appendix_3Y Failed to download PDF")
+      time.sleep(2)
+    except requests.exceptions.RequestException as e:
+        print(f"Error downloading {url}: {e}")
 
   file_paths = []
   for root, _, files in os.walk(path):

@@ -3,13 +3,35 @@ import os
 parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(1, parent_path)  # caution: path[0] is reserved for script path (or '' in REPL)
 
-import os
 import requests
 import time
 import re
 from utils.mysql_connect_funcs import get_df_tblName
 from utils.OpenAI_functions import run_assistant, get_files, clear_all
 import psutil
+import sys
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+proxy_host = os.getenv("proxy_host")
+proxy_port = os.getenv("proxy_port")
+proxy_user = os.getenv("proxy_user")
+proxy_pass = os.getenv("proxy_pass")
+
+proxy = f"{proxy_host}:{proxy_port}"
+proxy_auth = f"{proxy_user}:{proxy_pass}"
+
+proxies = {
+    'http': f'http://{proxy_auth}@{proxy}',
+    'https': f'http://{proxy_auth}@{proxy}'
+}
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+}
 
 def create_folder(folder_path):
   if os.path.exists(folder_path) == False:
@@ -24,22 +46,25 @@ def download_docs_from_asx(symbol, name, links, dates, parent_path):
 
   for i in range(len(links)):
     url = links[i]
-    response = requests.get(url)
+    try:
+        response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
+        response.raise_for_status()
+        if response.status_code == 200:
+          # Sanitize the name before using it in the file name
+          clean_name = sanitize_filename(name[i])
+          cleaned_date = sanitize_filename(dates[i])
+          file_path = os.path.join(parent_path, symbol, f"{symbol} {cleaned_date} {clean_name}.pdf")
+          print(file_path + 'downloaded')
 
-    if response.status_code == 200:
-      # Sanitize the name before using it in the file name
-      clean_name = sanitize_filename(name[i])
-      cleaned_date = sanitize_filename(dates[i])
-      file_path = os.path.join(parent_path, symbol, f"{symbol} {cleaned_date} {clean_name}.pdf")
-      print(file_path + 'downloaded')
+          # Write the file
+          with open(file_path, "wb") as f:
+            f.write(response.content)
+        else:
+          print(f"{symbol} {name[i]} Failed to download PDF")
+        time.sleep(2)
 
-      # Write the file
-      with open(file_path, "wb") as f:
-        f.write(response.content)
-    else:
-      print(f"{symbol} {name[i]} Failed to download PDF")
-
-    time.sleep(2)
+    except requests.exceptions.RequestException as e:
+        print(f"Error downloading {url}: {e}")
 
 df = get_df_tblName('announcements_today')
 df = df[df['Document Name'].str.contains('annual report', case=False, na=False)]
@@ -62,6 +87,7 @@ if not df.empty:
         time.sleep(2)
 else:
     print("No annual reports")
+    sys.exit()
 
 
 #renaming the files now

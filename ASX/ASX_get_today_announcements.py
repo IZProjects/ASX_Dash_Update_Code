@@ -51,7 +51,7 @@ df_combined = df_combined.drop(columns=["Links"])
 cols = ["Date", "Ticker"] + [col for col in df_combined.columns if col not in ["Date", "Ticker"]]
 df_combined = df_combined[cols]
 write_df_tblName("announcements_today_wPrice", df_combined)
-
+print(df_combined)
 
 """for i in range(len(df_difference)):
     ticker = df_difference.at[i, 'Ticker']

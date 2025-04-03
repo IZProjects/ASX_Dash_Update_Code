@@ -1,5 +1,11 @@
 Date,Ticker,Director,Type,Number of Shares,Price per Share,Value,Notes
-21 Feb 2025 2:15pm,[BPT](/02-companyoverview?data=BPT_AU),Brett Woods,Bought,"1,249",$1.43,"$1,785.07",on-market trade
-21 Feb 2025 1:49pm,[MPK](/02-companyoverview?data=MPK_AU),Vickki McFadden,Bought,"24,000",$6.58,"$158,000.00",On-market purchase
-21 Feb 2025 12:44pm,[STO](/02-companyoverview?data=STO_AU),John Gerard Lydon,Bought,29684,$6.73,"$199,991.72",On-market purchase
-21 Feb 2025 12:43pm,[STO](/02-companyoverview?data=STO_AU),Norman Seckold,Sold,"278,783",NA,NA,On-market trade (sale by Tatranji Pty Ltd ATF Jillieth Margaret Superannuation Fund)
+02 Apr 2025 7:14pm,[AII](/02-companyoverview?data=AII_AU),Daniel D’Amato,Bought,750000,$0.65,"$487,500.00",Issued
+02 Apr 2025 7:14pm,[AII](/02-companyoverview?data=AII_AU),Lewis Black,Bought,2900000,$0.65,"$1,885,000.00",Issued
+02 Apr 2025 7:10pm,[MEK](/02-companyoverview?data=MEK_AU),Paul Ian Chapman,Bought,"500,000",$0.10,"$50,000.00",Early conversion of unlisted options
+02 Apr 2025 7:10pm,[MEK](/02-companyoverview?data=MEK_AU),Paul Ian Chapman,Sold,"500,000",$0.10,"$50,000.00",Early conversion of unlisted options
+02 Apr 2025 7:09pm,[GLL](/02-companyoverview?data=GLL_AU),Raymond Shorrocks,Bought,"1,963,385",$0.01,"$14,240.23",On-market trade
+02 Apr 2025 6:50pm,[MAC](/02-companyoverview?data=MAC_AU),Graham Robert van’t Hoff,Issued,"2,577","$30,000.00","$30,000.00",Issue of securities under Director Share Unit Plan
+02 Apr 2025 7:10pm,[MEK](/02-companyoverview?data=MEK_AU),Paul Ian Chapman,Bought,500000,$0.10,"$50,000.00",Early conversion of unlisted options
+02 Apr 2025 7:10pm,[MEK](/02-companyoverview?data=MEK_AU),Paul Ian Chapman,Sold,500000,$0.10,"$50,000.00",Early conversion of unlisted options
+02 Apr 2025 7:09pm,[GLL](/02-companyoverview?data=GLL_AU),Raymond Shorrocks,Bought,"1,963,385",$0.01,"$14,238.63",On-market trade
+02 Apr 2025 6:50pm,[MAC](/02-companyoverview?data=MAC_AU),Graham Robert van’t Hoff,Issued,"2,577",NA,"$30,000.00",Issue of securities under Director Share Unit Plan

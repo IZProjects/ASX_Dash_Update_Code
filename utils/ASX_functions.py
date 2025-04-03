@@ -1,33 +1,80 @@
-import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
+#from selenium import webdriver
+from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 import pandas as pd
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import csv
 import re
-import sqlite3
 from datetime import datetime, timedelta
-#from get_db_paths import Paths
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
-def connect_to_page(url):
+proxy_host = os.getenv("proxy_host")
+proxy_port = os.getenv("proxy_port")
+proxy_user = os.getenv("proxy_user")
+proxy_pass = os.getenv("proxy_pass")
+
+"""def connect_to_page(url):
   options = webdriver.ChromeOptions()
   options.add_argument('--headless')
   options.add_argument('--no-sandbox')
   options.add_argument('--disable-dev-shm-usage')
+  options.add_argument('--ignore-certificate-errors')  # <-- Ignore SSL errors
+  options.add_argument('--allow-insecure-localhost')  # <-- Allow insecure connections
   driver=webdriver.Chrome(options=options)
   driver.get(url)
   driver.implicitly_wait(10)
   cookies=driver.find_element(by=By.ID,value="onetrust-accept-btn-handler")
   cookies.click()
-  wait_row = WebDriverWait(driver, 3)
-  rows = wait_row.until(EC.presence_of_all_elements_located((By.XPATH, './/*[@class="table table-bordered"]/tbody')))
+  #wait_row = WebDriverWait(driver, 3)
+  #rows = wait_row.until(EC.presence_of_all_elements_located((By.XPATH, './/*[@class="table table-bordered"]/tbody')))
   #driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
   time.sleep(3)
-  return driver
+  return driver"""
+
+
+# IPRoyal Proxy Credentials
+proxy = f"{proxy_host}:{proxy_port}"
+proxy_auth = f"{proxy_user}:{proxy_pass}"
+
+def connect_to_page(url):
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--ignore-certificate-errors')  # <-- Ignore SSL errors
+    options.add_argument('--allow-insecure-localhost')  # <-- Allow insecure connections
+
+    # Configure selenium-wire proxy settings
+    seleniumwire_options = {
+        'proxy': {
+            'http': f'http://{proxy_auth}@{proxy}',
+            'https': f'https://{proxy_auth}@{proxy}',
+        }
+    }
+
+    # Initialize WebDriver with proxy settings
+    driver = webdriver.Chrome(options=options, seleniumwire_options=seleniumwire_options)
+    driver.get(url)
+
+    # Wait for page to load
+    driver.implicitly_wait(10)
+    try:
+        # Accept cookies if element exists
+        cookies = WebDriverWait(driver, 5).until(
+            EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))
+        )
+        cookies.click()
+    except Exception as e:
+        print("Cookies banner not found or not clickable:", e)
+
+    time.sleep(3)
+    return driver
+
 
 def get_date_replacement(reference):
     today = datetime.now()

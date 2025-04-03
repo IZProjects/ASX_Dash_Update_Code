@@ -10,10 +10,10 @@ def delete_files_and_folders(folder_path):
             if os.path.isdir(item_path):
                 # If it's a folder, delete it recursively
                 shutil.rmtree(item_path)
-            else:
-                # If it's a file, delete it
+            elif os.path.isfile(item_path) and item != "init.txt":
+                # If it's a file and not "init.txt", delete it
                 os.remove(item_path)
-        print(f"All files and subfolders in {folder_path} have been deleted.")
+        print(f"All files and subfolders in {folder_path} have been deleted, except 'init.txt'.")
     else:
         print(f"The folder {folder_path} does not exist.")
 

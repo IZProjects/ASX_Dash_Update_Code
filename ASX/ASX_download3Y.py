@@ -147,11 +147,11 @@ if not df.empty:
       row = combined_df.iloc[i].tolist()
       insert_row_FR(f"insiderTrades_today", row, ['Date', 'Ticker', 'Director', 'Type', 'Number of Shares', 'Price per Share', 'Value', 'Notes'])
 
-  combined_df.to_csv("insider.csv", index=False)
+  #combined_df.to_csv("insider.csv", index=False)
 
   for filename in os.listdir(path):
     file_path = os.path.join(path, filename)
-    if os.path.isfile(file_path):
+    if os.path.isfile(file_path) and filename != "init.txt":
       os.remove(file_path)
       print(f"Deleted {filename}")
 

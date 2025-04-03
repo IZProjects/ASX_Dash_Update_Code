@@ -10,6 +10,8 @@ import re
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
 load_dotenv()
 
@@ -58,7 +60,7 @@ def connect_to_page(url):
     }
 
     # Initialize WebDriver with proxy settings
-    driver = webdriver.Chrome(options=options, seleniumwire_options=seleniumwire_options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, seleniumwire_options=seleniumwire_options)
     driver.get(url)
 
     # Wait for page to load

@@ -8,8 +8,8 @@ from utils.mysql_connect_funcs import get_df_tblName, insert_row_SC, replace_row
 import os
 import pandas as pd
 
-docs_path = "../annual_reports/"
-tickers = [folder for folder in os.listdir(docs_path) if os.path.isdir(os.path.join(docs_path, folder))]
+#docs_path = "../annual_reports/"
+tickers = [folder for folder in os.listdir(os.path.join(parent_path, "annual_reports")) if os.path.isdir(os.path.join(parent_path, "annual_reports", folder))]
 
 if not tickers:
     print('No updates')
@@ -23,7 +23,7 @@ else:
         try:
             filtered_df = df_metadata[df_metadata['symbol'] == tickers[i]].reset_index(drop=True)
             company_name = filtered_df['name'].iloc[0]
-            file_paths, years = get_files(docs_path, tickers[i])
+            file_paths, years = get_files(os.path.join(parent_path, "annual_reports"), tickers[i])
             for j in range(len(file_paths)):
                 try:
                     prompt = "Summarise the all the updates and changes that happened to " + tickers[i] + '(' + company_name + ')' + " in " + years[j]
@@ -65,7 +65,7 @@ else:
     rows=[]
     for i in range(len(tickers)):
         try:
-            file_paths, years = get_files(docs_path, tickers[i])
+            file_paths, years = get_files(os.path.join(parent_path, "annual_reports"), tickers[i])
             for j in range(len(file_paths)):
                 try:
                     prompt = "please extract the operating results for all the company's business segments"
@@ -89,7 +89,7 @@ else:
     rows=[]
     for i in range(len(tickers)):
         try:
-            file_paths, years = get_files(docs_path, tickers[i])
+            file_paths, years = get_files(os.path.join(parent_path, "annual_reports"), tickers[i])
             for j in range(len(file_paths)):
                 try:
                     prompt = "Please get a description of each of the business segments in the company based on the attached file. \n"

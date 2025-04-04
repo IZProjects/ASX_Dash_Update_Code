@@ -67,9 +67,8 @@ def download_docs_from_asx(symbol, name, links, dates, parent_path):
         print(f"Error downloading {url}: {e}")
 
 df = get_df_tblName('announcements_today')
-print(df)
-#df = df[df['Document Name'].str.contains('annual report', case=False, na=False)]
-df = df[df['Document Name'].str.contains('dividend reinvestment plan', case=False, na=False)]
+df = df[df['Document Name'].str.contains('annual report', case=False, na=False)]
+#df = df[df['Document Name'].str.contains('dividend reinvestment plan', case=False, na=False)]
 df = df.reset_index(drop=True)
 
 #parent_path = '../annual_reports/'

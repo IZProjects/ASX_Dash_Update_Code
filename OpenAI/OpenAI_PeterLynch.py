@@ -124,8 +124,8 @@ def find_category(content):
     return category
 
 
-docs_path = "../annual_reports/"
-tickers = [folder for folder in os.listdir(docs_path) if os.path.isdir(os.path.join(docs_path, folder))]
+#docs_path = "../annual_reports/"
+tickers = [folder for folder in os.listdir(os.path.join(parent_path, "annual_reports")) if os.path.isdir(os.path.join(parent_path, "annual_reports", folder))]
 
 if not tickers:
     print('No updates')

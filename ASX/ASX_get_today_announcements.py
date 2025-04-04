@@ -15,6 +15,7 @@ sydney_time = datetime.now(sydney_tz)
 date = sydney_time.strftime("%d %b %Y")
 
 url = 'https://www2.asx.com.au/markets/trade-our-cash-market/announcements'
+#url = 'https://www2.asx.com.au/markets/trade-our-cash-market/announcements.jdo.au'
 
 #df_existing = getAnnouncements(url, 1)
 df_existing = get_df_tblName('announcements_today')

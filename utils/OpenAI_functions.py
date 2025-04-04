@@ -10,7 +10,7 @@ os.environ["OPENAI_API_KEY"] = api_key
 client = OpenAI()
 
 def get_files(docs_path, ticker):
-  directory_path = docs_path + ticker
+  directory_path = os.path.join(docs_path, ticker)
   files = [os.path.join(directory_path, name) for name in os.listdir(directory_path) if os.path.isfile(os.path.join(directory_path, name))]
   file_names = [name for name in os.listdir(directory_path) if os.path.isfile(os.path.join(directory_path, name))]
   years = [re.search(r'\b(19|20)\d{2}\b', s).group() for s in file_names]

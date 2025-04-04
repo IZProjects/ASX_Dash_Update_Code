@@ -1,5 +1,8 @@
 import os
 import shutil
+parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+
 
 def delete_files_and_folders(folder_path):
     # Check if the folder exists
@@ -18,5 +21,5 @@ def delete_files_and_folders(folder_path):
         print(f"The folder {folder_path} does not exist.")
 
 # Example usage
-folder_path = '../annual_reports/'  # Change to the folder you want to delete contents of
+folder_path = os.path.join(parent_path, 'annual_reports')
 delete_files_and_folders(folder_path)

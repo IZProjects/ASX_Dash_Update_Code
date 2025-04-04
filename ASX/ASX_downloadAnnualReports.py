@@ -42,7 +42,7 @@ def sanitize_filename(name):
 
 def download_docs_from_asx(symbol, name, links, dates, parent_path):
   # Ensure the parent directory exists
-  os.makedirs(os.path.join(parent_path, symbol), exist_ok=True)
+  os.makedirs(os.path.join(parent_path, 'annual_reports', symbol), exist_ok=True)
 
   for i in range(len(links)):
     url = links[i]
@@ -53,7 +53,7 @@ def download_docs_from_asx(symbol, name, links, dates, parent_path):
           # Sanitize the name before using it in the file name
           clean_name = sanitize_filename(name[i])
           cleaned_date = sanitize_filename(dates[i])
-          file_path = os.path.join(parent_path, symbol, f"{symbol} {cleaned_date} {clean_name}.pdf")
+          file_path = os.path.join(parent_path, 'annual_reports', symbol, f"{symbol} {cleaned_date} {clean_name}.pdf")
           print(file_path + 'downloaded')
 
           # Write the file
@@ -67,11 +67,12 @@ def download_docs_from_asx(symbol, name, links, dates, parent_path):
         print(f"Error downloading {url}: {e}")
 
 df = get_df_tblName('announcements_today')
-df = df[df['Document Name'].str.contains('annual report', case=False, na=False)]
-#df = df[df['Document Name'].str.contains('half yearly', case=False, na=False)]
+print(df)
+#df = df[df['Document Name'].str.contains('annual report', case=False, na=False)]
+df = df[df['Document Name'].str.contains('dividend reinvestment plan', case=False, na=False)]
 df = df.reset_index(drop=True)
 
-parent_path = '../annual_reports/'
+#parent_path = '../annual_reports/'
 
 if not df.empty:
     ticker_dfs = {ticker: group for ticker, group in df.groupby('Ticker')}
@@ -80,7 +81,7 @@ if not df.empty:
         links = ticker_df['Links'].to_list()
         dates = ticker_df['Date'].to_list()
 
-        folder_path = parent_path + ticker
+        folder_path = os.path.join(parent_path, 'annual_reports', ticker)
         create_folder(folder_path)
 
         download_docs_from_asx(ticker, names, links, dates, parent_path)
@@ -126,13 +127,13 @@ def renameFile(message, docs_path, current_path, ticker):
 
 prompt = "This is an annual report for a company. What year is it reporting on? Provide only the year in your response.\n"
 assistantID = 'asst_itFTGt6IWtVjfqCBrdVMfLdk'
-tickers = [folder for folder in os.listdir(parent_path) if os.path.isdir(os.path.join(parent_path, folder))]
+tickers = [folder for folder in os.listdir(os.path.join(parent_path, 'annual_reports')) if os.path.isdir(os.path.join(parent_path, 'annual_reports', folder))]
 
 for i in range(len(tickers)):
-  file_paths, years = get_files(parent_path, tickers[i])
+  file_paths, years = get_files(os.path.join(parent_path, 'annual_reports'), tickers[i])
   for j in range(len(file_paths)):
     message = run_assistant(file_paths[j],prompt,assistantID)
-    renameFile(message, parent_path, file_paths[j], tickers[i])
+    renameFile(message, os.path.join(parent_path, 'annual_reports'), file_paths[j], tickers[i])
 
 
 try:

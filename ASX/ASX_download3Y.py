@@ -131,15 +131,18 @@ if not df.empty:
 
     dfs = []
     for i, file_path in enumerate(file_paths):
-        tsv_string = run_assistant(file_path, prompt, assistantID)
-        cleaned_tsv = "\n".join([line for line in tsv_string.split("\n") if not re.fullmatch(r"\W+", line)])
-        df_tsv = pd.read_csv(StringIO(cleaned_tsv), sep="\t")
+        try:
+            tsv_string = run_assistant(file_path, prompt, assistantID)
+            cleaned_tsv = "\n".join([line for line in tsv_string.split("\n") if not re.fullmatch(r"\W+", line)])
+            df_tsv = pd.read_csv(StringIO(cleaned_tsv), sep="\t")
 
-        if not df_tsv.empty and df_tsv.shape[1] == 6:
-            df_tsv.columns = ['Director', 'Bought/Sold/Issued', 'Number of Shares', 'Price per Share', 'Value', 'Type']
-            df_tsv.insert(0, "Date", df.at[i, 'Date'])
-            df_tsv.insert(1, "Ticker", df.at[i, 'Ticker'])
-            dfs.append(df_tsv)
+            if not df_tsv.empty and df_tsv.shape[1] == 6:
+                df_tsv.columns = ['Director', 'Bought/Sold/Issued', 'Number of Shares', 'Price per Share', 'Value', 'Type']
+                df_tsv.insert(0, "Date", df.at[i, 'Date'])
+                df_tsv.insert(1, "Ticker", df.at[i, 'Ticker'])
+                dfs.append(df_tsv)
+        except Exception as e:
+            print(f"An error has occurred: {e}")
 
     if dfs:
         combined_df = pd.concat(dfs, ignore_index=True)

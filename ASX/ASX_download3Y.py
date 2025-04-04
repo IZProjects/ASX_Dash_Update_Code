@@ -36,9 +36,12 @@ headers = {
 }
 
 def format_dollars(value):
-    value = str(value)
-    value = re.sub(r"[^\d.]", "", value)
-    return f"${float(value):,.2f}" if value else "NA"
+    try:
+        value = str(value)
+        value = re.sub(r"[^\d.]", "", value)
+        return f"${float(value):,.2f}" if value else "NA"
+    except:
+        return "NA"
 
 def sanitize_filename(name):
     return re.sub(r'[<>:"/\\|?*]', '', name)

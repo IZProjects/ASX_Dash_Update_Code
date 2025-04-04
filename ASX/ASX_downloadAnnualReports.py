@@ -66,7 +66,8 @@ def download_docs_from_asx(symbol, name, links, dates, parent_path):
     except requests.exceptions.RequestException as e:
         print(f"Error downloading {url}: {e}")
 
-df = get_df_tblName('announcements_today')
+#df = get_df_tblName('announcements_today')
+df = get_df_tblName('announcements_difference')
 df = df[df['Document Name'].str.contains('annual report', case=False, na=False)]
 #df = df[df['Document Name'].str.contains('dividend reinvestment plan', case=False, na=False)]
 df = df.reset_index(drop=True)

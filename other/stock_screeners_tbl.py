@@ -8,6 +8,8 @@ pd.options.mode.chained_assignment = None  # default='warn'
 import re
 from utils.mysql_connect_funcs import fetch_tables_for_screener, get_df_tblName, write_df_tblName
 
+print("---------- Starting: other/stock_screeners_tbl.py ----------")
+
 sup_IS = ['EBITDA', 'Gross Margin', 'EBITDA Margin', 'Operating Margin', 'Pretax Margin', 'Net Income Margin', 'Revenue per Share', 'EBITDA per Share', 'Operating Income per Share', 'Pretax Income per Share',
           'Revenue Growth', 'Gross Profit Growth', 'EBITDA Growth', 'Operating Income Growth', 'Pre-Tax Income Growth', 'Net Income Growth', 'Diluted EPS Growth', 'Number of Diluted Shares Growth', 'Net Interest Margin',
           'Net Interest Income Growth','10 Yr Revenue CAGR', '10 Yr Diluted EPS CAGR', '10 Yr Net Interest Income CAGR','Policy Revenue', 'Underwriting Profit','Underwriting Margin', 'Policy Revenue Growth',
@@ -238,4 +240,4 @@ write_df_tblName('Screener_TBL2', df2)
 #df_transposed = df_transposed.reset_index(drop=True)
 #db_conn.close()
 
-print(df_transposed)
+print("---------- Finished: other/stock_screeners_tbl.py ----------\n\n\n")

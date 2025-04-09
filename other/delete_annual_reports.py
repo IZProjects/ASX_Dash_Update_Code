@@ -2,7 +2,7 @@ import os
 import shutil
 parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-
+print("---------- Starting: other/delete_annual_reports.py ----------")
 
 def delete_files_and_folders(folder_path):
     # Check if the folder exists
@@ -23,3 +23,5 @@ def delete_files_and_folders(folder_path):
 # Example usage
 folder_path = os.path.join(parent_path, 'annual_reports')
 delete_files_and_folders(folder_path)
+
+print("---------- Finished: other/delete_annual_reports.py ----------\n\n\n")

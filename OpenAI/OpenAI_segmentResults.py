@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from io import StringIO
 
+print("---------- Starting: OpenAI/OpenAI_segmentResults.py ----------")
+
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 os.environ["OPENAI_API_KEY"] = api_key
@@ -46,8 +48,10 @@ else:
             if 'year' in df2.columns:
                 df2 = df2[~df2['year'].str.contains('-')]
 
-            print(df2)
+            #print(df2)
             write_df_tblName(tickers[i] + '_segmentResults',df2)
             print(tickers[i] + " success")
         except Exception as e:
             print(tickers[i] + f' failed. An error has occurred: {e}')
+
+print("---------- Finished: OpenAI/OpenAI_segmentResults.py ----------\n\n\n")

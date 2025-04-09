@@ -7,6 +7,8 @@ from utils.mysql_connect_funcs import get_df_tblName, write_df_tblName
 import logging
 import pandas as pd
 
+print("---------- Starting: EODHD/EODHD_WLA.py ----------")
+
 # Configure logging
 logging.basicConfig(
     filename="EODHD_WLA.log",
@@ -72,3 +74,4 @@ tickers = [s.replace("_", ".") for s in tickers]
 df_100M = df[df['code'].isin(tickers)]
 get_GLA(df_100M,"losers100M","winners100M","active100M")
 
+print("---------- Finished: EODHD/EODHD_WLA.py ----------\n\n\n")

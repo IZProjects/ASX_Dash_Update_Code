@@ -9,6 +9,8 @@ import pandas as pd
 from dotenv import load_dotenv
 from openai import OpenAI
 
+print("---------- Starting: OpenAI/OpenAI_PeterLynch.py ----------")
+
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 os.environ["OPENAI_API_KEY"] = api_key
@@ -147,3 +149,4 @@ else:
         except:
             print(str(i) + ' ' + tickers[i] + ' failed')
 
+print("---------- Finished: OpenAI/OpenAI_PeterLynch.py ----------\n\n\n")

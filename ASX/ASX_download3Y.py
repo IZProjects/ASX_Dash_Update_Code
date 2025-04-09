@@ -15,6 +15,8 @@ from dotenv import load_dotenv
 from utils.mysql_connect_funcs import get_df_tblName, insert_row_FR
 from utils.OpenAI_functions import run_assistant
 
+print("---------- Starting: ASX/ASX_download3Y.py ----------")
+
 load_dotenv()
 
 # Proxy setup
@@ -163,7 +165,7 @@ if not df.empty:
         if os.path.isfile(file_path) and filename != "init.txt":
             retry_count = 0
             while is_file_in_use(file_path) and retry_count < 5:
-                print(f"Waiting for {filename} to be released...")
+                #print(f"Waiting for {filename} to be released...")
                 time.sleep(2)
                 retry_count += 1
 
@@ -174,4 +176,6 @@ if not df.empty:
                 print(f"Failed to delete {filename}, skipping.")
 
 else:
-    print("empty")
+    print("No Insider Trades")
+
+print("---------- Finished: ASX/ASX_download3Y.py ----------\n\n\n")

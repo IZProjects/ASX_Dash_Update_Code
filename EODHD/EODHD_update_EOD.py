@@ -10,6 +10,8 @@ from utils.EODHD_functions import get_weekly_data, get_monthly_data, get_histori
 from utils.mysql_connect_funcs import write_df_tblName, get_df_tblName
 import logging
 
+print("---------- Starting: EODHD/EODHD_update_EOD.py ----------")
+
 # Configure logging
 logging.basicConfig(
     filename="EODHD_update_EOD.log",
@@ -77,3 +79,4 @@ for stock in stocks:
         logging.error(f"{stock} failed with error: {e}", exc_info=True)
 
 logging.info("run complete")
+print("---------- Finished: EODHD/EODHD_update_EOD.py ----------\n\n\n")

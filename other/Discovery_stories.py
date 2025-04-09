@@ -10,8 +10,8 @@ import pandas as pd
 from dotenv import load_dotenv
 from openai import OpenAI
 from io import StringIO
-import re
 
+print("---------- Starting: other/Discovery_stories.py ----------")
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -144,3 +144,5 @@ for i in range(len(df_tsv)):
     df_tsv.at[i, 'Story'] = text.replace('<br> ', '\n')
     df_tsv.at[i, 'Story'] = text.replace('<br>', '\n')
 write_df_tblName('discovery_growthStory',df_tsv)
+
+print("---------- Finished: other/Discovery_stories.py ----------\n\n\n")

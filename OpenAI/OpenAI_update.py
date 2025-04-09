@@ -8,6 +8,8 @@ from utils.mysql_connect_funcs import get_df_tblName, insert_row_SC, replace_row
 import os
 import pandas as pd
 
+print("---------- Starting: OpenAI/OpenAI_update.py ----------")
+
 #docs_path = "../annual_reports/"
 tickers = [folder for folder in os.listdir(os.path.join(parent_path, "annual_reports")) if os.path.isdir(os.path.join(parent_path, "annual_reports", folder))]
 
@@ -107,6 +109,6 @@ else:
         data = row.tolist()
         replace_row('SegmentDescription', data, ['ticker', 'content'])
 
-
-
     clear_all()
+
+print("---------- Finished: OpenAI/OpenAI_update.py ----------\n\n\n")

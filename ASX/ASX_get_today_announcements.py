@@ -10,6 +10,8 @@ import pytz
 import pandas as pd
 
 
+print("---------- Starting: ASX/ASX_get_today_announcements.py ----------")
+
 sydney_tz = pytz.timezone("Australia/Sydney")
 sydney_time = datetime.now(sydney_tz)
 date = sydney_time.strftime("%d %b %Y")
@@ -52,7 +54,8 @@ df_combined = df_combined.drop(columns=["Links"])
 cols = ["Date", "Ticker"] + [col for col in df_combined.columns if col not in ["Date", "Ticker"]]
 df_combined = df_combined[cols]
 write_df_tblName("announcements_today_wPrice", df_combined)
-print(df_combined)
+
+print("---------- Finished: ASX/ASX_get_today_announcements.py ----------\n\n\n")
 
 """for i in range(len(df_difference)):
     ticker = df_difference.at[i, 'Ticker']

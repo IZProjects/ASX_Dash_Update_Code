@@ -8,6 +8,8 @@ from utils.EODHD_functions import get_real_time_multi_stock_data
 from utils.mysql_connect_funcs import write_df_tblName, get_df_tblName
 import logging
 
+print("---------- Starting: EODHD/EODHD_update_real_time.py ----------")
+
 # Configure logging
 logging.basicConfig(
     filename="EODHD_update_real_time.log",
@@ -58,3 +60,4 @@ except Exception as e:
     logging.error(f"An error has occurred: {e}", exc_info=True)
     print(f"An error has occurred: {e}")
 
+print("---------- Finished: EODHD/EODHD_update_real_time.py ----------\n\n\n")

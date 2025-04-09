@@ -8,6 +8,7 @@ from datetime import datetime
 import pytz
 import pandas as pd
 
+print("---------- Starting: ASX/ASX_reset_tables.py ----------")
 
 sydney_tz = pytz.timezone("Australia/Sydney")
 
@@ -50,3 +51,5 @@ df = pd.DataFrame([{
 
 }])
 #write_df_tblName('insiderTrades_today', df)
+
+print("---------- Finished: ASX/ASX_reset_tables.py ----------\n\n\n")

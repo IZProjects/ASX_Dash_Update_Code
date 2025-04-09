@@ -14,6 +14,8 @@ import sys
 from dotenv import load_dotenv
 import os
 
+print("---------- Starting: ASX/ASX_downloadAnnualReports.py ----------")
+
 load_dotenv()
 
 proxy_host = os.getenv("proxy_host")
@@ -142,5 +144,5 @@ except:
   pass
 
 
-
+print("---------- Finished: ASX/ASX_downloadAnnualReports.py ----------\n\n\n")
 

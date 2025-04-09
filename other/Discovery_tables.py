@@ -7,7 +7,7 @@ from utils.mysql_connect_funcs import write_df_tblName, get_df_tblName
 
 import pandas as pd
 
-
+print("---------- Starting: other/Discovery_tables.py ----------")
 
 pd.options.mode.chained_assignment = None  # default='warn'
 def format_number(num):
@@ -94,3 +94,5 @@ write_df_tblName("discovery_growth", process_growth(df3))
 
 df3 = df3[(df3['Market_Cap'] > 100000000)]
 write_df_tblName("discovery_growth_100M", process_growth(df3))
+
+print("---------- Finished: other/Discovery_tables.py ----------\n\n\n")

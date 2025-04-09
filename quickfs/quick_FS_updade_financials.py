@@ -10,6 +10,9 @@ from datetime import datetime, timedelta
 from utils.mysql_connect_funcs import write_df_tblName
 pd.options.mode.chained_assignment = None  # default='warn'
 
+
+print("---------- Starting: quickfs/quick_FS_updade_financials.py ----------")
+
 sydney_tz = pytz.timezone("Australia/Sydney")
 sydney_time = datetime.now(sydney_tz)
 today = sydney_time.strftime("%Y%m%d")
@@ -179,3 +182,5 @@ for stock in stocks:
 
 df_fails = pd.DataFrame(fails, columns=['stock', 'period', 'statement_type'])
 print(df_fails)
+
+print("---------- Finished: quickfs/quick_FS_updade_financials.py ----------\n\n\n")

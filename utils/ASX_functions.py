@@ -64,10 +64,10 @@ def connect_to_page(url):
     driver.get(url)
 
     # Wait for page to load
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(120)
     try:
         # Accept cookies if element exists
-        cookies = WebDriverWait(driver, 10).until(
+        cookies = WebDriverWait(driver, 120).until(
             EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))
         )
         cookies.click()

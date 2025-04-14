@@ -122,6 +122,7 @@ period_types = ['annual', 'quarterly']
 #df_stocks = pd.read_csv(path)
 df_metadata = get_df_tblName("metadataTBL")
 stocks = df_metadata['symbol'].to_list()
+stocks=stocks[1629:]
 stocks = [item + ":AU" for item in stocks]
 
 # get individial statements

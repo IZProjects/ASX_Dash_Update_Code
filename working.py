@@ -12,9 +12,12 @@ date = sydney_time.strftime('%d %b %Y %I:%M%p')
 df = pd.DataFrame([{
     "Date": date,
     "Ticker": "",
-    "Document Name": "START OF DAY",
+    "Director": "",
     "Type": "",
-    "Document Number": 0000,
-    "Price Change (%)": ""
+    "Number of Shares": "",
+    "Price per Share": "",
+    "Value": "",
+    "Notes": "START OF DAY",
+
 }])
-write_df_tblName('announcements_today_wPrice', df)
+write_df_tblName('insiderTrades_total', df)

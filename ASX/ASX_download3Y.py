@@ -156,6 +156,7 @@ if not df.empty:
         for i in range(len(combined_df)):
             row = combined_df.iloc[i].tolist()
             insert_row_FR("insiderTrades_today", row, ['Date', 'Ticker', 'Director', 'Type', 'Number of Shares', 'Price per Share', 'Value', 'Notes'])
+            insert_row_FR("insiderTrades_total", row, ['Date', 'Ticker', 'Director', 'Type', 'Number of Shares', 'Price per Share', 'Value', 'Notes'])
 
     # Ensure files are closed before deleting
     time.sleep(3)

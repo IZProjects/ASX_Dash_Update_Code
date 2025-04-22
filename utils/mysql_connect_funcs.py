@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text, inspect
+from sqlalchemy import create_engine, text, inspect, MetaData, Table
 import pandas as pd
 from sqlalchemy.exc import SQLAlchemyError
 import os
@@ -191,7 +191,7 @@ def replace_row(table, data, columns, element_index=0, column_index=0):
         print(f"An error occurred: {e}")
 
 
-def delete_table(table_name):
+"""def delete_table(table_name):
     try:
         connection_string = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
         engine = create_engine(connection_string)
@@ -204,7 +204,7 @@ def delete_table(table_name):
         print(f"Error occurred: {e}")
 
     finally:
-        engine.dispose()
+        engine.dispose()"""
 
 
 def filter_table(table_name, column_name, values_list):
@@ -232,3 +232,19 @@ def get_table_names():
 
     inspector = inspect(engine)
     return inspector.get_table_names()
+
+def delete_table(table_name):
+    connection_string = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(connection_string)
+    metadata = MetaData()
+    inspector = inspect(engine)
+
+    try:
+        if table_name in inspector.get_table_names():
+            table = Table(table_name, metadata, autoload_with=engine)
+            table.drop(engine)
+            print(f"Table '{table_name}' has been deleted from database '{database}'.")
+        else:
+            print(f"Table '{table_name}' does not exist in database '{database}'.")
+    except Exception as e:
+        print(f"Error deleting table '{table_name}': {e}")

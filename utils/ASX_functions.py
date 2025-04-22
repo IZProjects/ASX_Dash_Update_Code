@@ -61,6 +61,9 @@ def connect_to_page(url):
 
     # Initialize WebDriver with proxy settings
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, seleniumwire_options=seleniumwire_options)
+    driver.execute_cdp_cmd("Network.setBlockedURLs", {
+        "urls": ["*.png", "*.jpg", "*.jpeg", "*.gif", "*.css", "*.woff2", "*.svg"]
+    })
     driver.get(url)
 
     # Wait for page to load

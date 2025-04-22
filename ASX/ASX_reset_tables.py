@@ -22,7 +22,7 @@ df = pd.DataFrame([{
     "Links": "",
     "Document Name": "START OF DAY",
     "Ticker": "",
-    "Type": ""
+    "Type": "",
 }])
 
 write_df_tblName('announcements_today', df)
@@ -34,6 +34,7 @@ df = pd.DataFrame([{
     "Ticker": "",
     "Document Name": "START OF DAY",
     "Type": "",
+    "Document Number": 0000,
     "Price Change (%)": ""
 }])
 write_df_tblName('announcements_today_wPrice', df)

@@ -1,0 +1,38 @@
+verified on vm:
+quickfs/quick_FS_updade_financials.py
+EODHD/EODHD_update_real_time.py
+EODHD/EODHD_WLA.py
+EODHD/EODHD_update_EOD.py
+other/Discovery_stories.py 
+other/Discovery_tables.py 
+other/stock_screeners_tbl.py 
+ASX/ASX_downloadAnnualReports.py
+ASX/ASX_download3Y.py
+other/delete_annual_reports.py 
+other/stock_screeners_tbl.py
+OpenAI/OpenAI_update.py
+OpenAI/OpenAI_segmentResults.py
+OpenAI/OpenAI_PeterLynch.py
+
+
+plan:
+
+EOD scripts (~7pm?):
+quickfs/quick_FS_updade_financials.py
+EODHD/EODHD_update_EOD.py 
+other/Discovery_tables.py
+other/Discovery_stories.py
+other/stock_screeners_tbl.py 
+ASX/ASX_reset_tables.py
+
+Every 2 hours? (from 8am? - 7pm?):
+ASX/ASX_get_today_announcements.py
+ASX/ASX_download3Y.py
+EODHD/EODHD_update_real_time.py 
+EODHD/EODHD_WLA.py 
+ASX/ASX_downloadAnnualReports.py
+OpenAI/OpenAI_update.py
+OpenAI/OpenAI_segmentResults.py
+OpenAI/OpenAI_PeterLynch.py
+other/delete_annual_reports.py
+

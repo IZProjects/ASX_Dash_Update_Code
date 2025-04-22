@@ -58,6 +58,7 @@ write_df_tblName('insiderTrades_today', df)
 df_IT = get_df_tblName("insiderTrades_today")
 df_IT['Date'] = pd.to_datetime(df_IT['Date'], format='%d %b %Y %I:%M%p')
 df_IT = df_IT.sort_values('Date', ascending=False).reset_index(drop=True)
+df_IT['Date'] = df_IT['Date'].dt.strftime('%d %b %Y %I:%M%p')
 df_IT = df_IT.head(50)
 write_df_tblName('insiderTrades_today', df_IT)
 

@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime
 import pytz
 
-sydney_tz = pytz.timezone("Australia/Sydney")
+"""sydney_tz = pytz.timezone("Australia/Sydney")
 
 sydney_time = datetime.now(sydney_tz)
 
@@ -20,4 +20,12 @@ df = pd.DataFrame([{
     "Notes": "START OF DAY",
 
 }])
-write_df_tblName('insiderTrades_total', df)
+write_df_tblName('insiderTrades_total', df)"""
+
+df = get_df_tblName("insiderTrades_total")
+print(df.at[0,'Date'])
+print(type(df.at[0,'Date']))
+
+df = get_df_tblName("insiderTrades_today")
+print(df.at[0,'Date'])
+print(type(df.at[0,'Date']))

@@ -24,7 +24,7 @@ def upload_file(url, filename):
 
         # S3 upload
         bucket_name = s3_bucket
-        s3_file_key = f'{s3_folder}/{filename}'
+        s3_file_key = f"{s3_folder}/{filename}"
 
         s3 = boto3.client('s3')
 

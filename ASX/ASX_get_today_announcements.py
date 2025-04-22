@@ -73,12 +73,11 @@ for attempt in range(1, max_retries + 1):
         awsLinks = []
         for i in range(len(df_difference)):
             url = df_difference.at[i,'Links']
-            filename = df_difference.at[i,'Document Number']
+            filename = str(df_difference.at[i,'Document Number'])
             upload_file(url, f'{filename}.pdf')
             awsLinks.append(f"https://{s3_bucket}.s3.ap-southeast-2.amazonaws.com/{s3_folder}/{filename}.pdf")
 
         df_difference['awsLinks'] = awsLinks
-
 
         df_difference["Document Name"] = df_difference.apply(lambda row: f'[{row["Document Name"]}]({row["awsLinks"]})', axis=1)
         df_difference = df_difference.drop(columns=["Links"])
@@ -87,7 +86,6 @@ for attempt in range(1, max_retries + 1):
         df_difference = df_difference[cols]
 
         df_combined2 = pd.concat([df_existing2, df_difference]).reset_index(drop=True)
-        print(df_combined2.head())
 
         write_df_tblName('announcements_difference', df_differenceTBL)
         write_df_tblName('announcements_today', df_combinedTBL)

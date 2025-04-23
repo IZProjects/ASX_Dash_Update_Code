@@ -32,10 +32,11 @@ df_existing = get_df_tblName('announcements_today')
 df_existing2 = get_df_tblName('announcements_today_wPrice')
 df_metadata = get_df_tblName("metadataTBL")
 
+driver = None
 max_retries = 10
 for attempt in range(1, max_retries + 1):
     try:
-        df_new = getAnnouncements(url, 3)
+        df_new, driver = getAnnouncements(url, 3)
         df_new.columns = [col.title() for col in df_new.columns]
 
         df_new = df_new[df_new["Date"].str.contains(date, na=False)]
@@ -100,6 +101,10 @@ for attempt in range(1, max_retries + 1):
             print("Max retries reached. Exiting.")
         else:
             time.sleep(2)
+
+    finally:
+        if driver:
+            driver.quit()
 
 """for i in range(len(df_difference)):
     ticker = df_difference.at[i, 'Ticker']

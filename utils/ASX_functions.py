@@ -151,11 +151,5 @@ def getAnnouncements(url, noPages):
     except:
       break
   df = pd.concat(getTableList,ignore_index=True)
-  #db_path = Paths.database("annoucement_DB.db")
-  #connection = sqlite3.connect(db_path)
-  #df.columns = ['Date', 'Links', 'Document Name', 'Ticker', 'Type']
-  #df.to_sql(sql_table, connection, if_exists='replace', index=False)
-  #connection.close()
-  #print(sql_table+ " saved")
-  return df
+  return df, driver
 

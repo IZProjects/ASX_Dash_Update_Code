@@ -3,5 +3,5 @@ import pandas as pd
 from datetime import datetime
 import pytz
 
-delete_table("insiderTrades_today")
+print(get_df_tblName("real_time"))
 

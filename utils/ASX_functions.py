@@ -20,24 +20,6 @@ proxy_port = os.getenv("proxy_port")
 proxy_user = os.getenv("proxy_user")
 proxy_pass = os.getenv("proxy_pass")
 
-"""def connect_to_page(url):
-  options = webdriver.ChromeOptions()
-  options.add_argument('--headless')
-  options.add_argument('--no-sandbox')
-  options.add_argument('--disable-dev-shm-usage')
-  options.add_argument('--ignore-certificate-errors')  # <-- Ignore SSL errors
-  options.add_argument('--allow-insecure-localhost')  # <-- Allow insecure connections
-  driver=webdriver.Chrome(options=options)
-  driver.get(url)
-  driver.implicitly_wait(10)
-  cookies=driver.find_element(by=By.ID,value="onetrust-accept-btn-handler")
-  cookies.click()
-  #wait_row = WebDriverWait(driver, 3)
-  #rows = wait_row.until(EC.presence_of_all_elements_located((By.XPATH, './/*[@class="table table-bordered"]/tbody')))
-  #driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-  time.sleep(3)
-  return driver"""
-
 
 # IPRoyal Proxy Credentials
 proxy = f"{proxy_host}:{proxy_port}"
@@ -45,7 +27,7 @@ proxy_auth = f"{proxy_user}:{proxy_pass}"
 
 def connect_to_page(url):
     options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
+    #options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--ignore-certificate-errors')  # <-- Ignore SSL errors
@@ -75,8 +57,14 @@ def connect_to_page(url):
         )
         cookies.click()
     except Exception as e:
-        print("Cookies banner not found or not clickable:", e)
-
+        print("Cookies banner not found or not clickable")
+    try:
+        # check if page loads
+        WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "table.table.table-bordered"))
+        )
+    except Exception as e:
+        print("Page not fully loaded:")
     time.sleep(3)
     return driver
 

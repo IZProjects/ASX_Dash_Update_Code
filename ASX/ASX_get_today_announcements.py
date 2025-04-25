@@ -15,8 +15,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-s3_bucket = os.getenv("AWS_S3_BUCKET_NAME")
-s3_folder = os.getenv("AWS_S3_FOLDER")
+#s3_bucket = os.getenv("AWS_S3_BUCKET_NAME")
+#s3_folder = os.getenv("AWS_S3_FOLDER")
 
 print("---------- Starting: ASX/ASX_get_today_announcements.py ----------")
 
@@ -51,7 +51,7 @@ for attempt in range(1, max_retries + 1):
         df_combinedTBL = df_combined.copy()
 
 
-        tickers = df_difference['Ticker'].to_list()
+        """tickers = df_difference['Ticker'].to_list()
         tickers = [ticker + ".AU" for ticker in tickers]
         df_prices = filter_table('real_time', 'code', tickers)
         df_prices['code'] = df_prices['code'].str.replace('.AU', '', regex=False)
@@ -86,11 +86,11 @@ for attempt in range(1, max_retries + 1):
         cols = ["Date", "Ticker"] + [col for col in df_difference.columns if col not in ["Date", "Ticker"]]
         df_difference = df_difference[cols]
 
-        df_combined2 = pd.concat([df_existing2, df_difference]).reset_index(drop=True)
+        df_combined2 = pd.concat([df_existing2, df_difference]).reset_index(drop=True)"""
 
         write_df_tblName('announcements_difference', df_differenceTBL)
         write_df_tblName('announcements_today', df_combinedTBL)
-        write_df_tblName("announcements_today_wPrice", df_combined2)
+        #write_df_tblName("announcements_today_wPrice", df_combined2)
         print("---------- Finished: ASX/ASX_get_today_announcements.py ----------\n\n\n")
         break
 
@@ -105,10 +105,4 @@ for attempt in range(1, max_retries + 1):
     finally:
         if driver:
             driver.quit()
-
-"""for i in range(len(df_difference)):
-    ticker = df_difference.at[i, 'Ticker']
-    row = df_difference.iloc[i].tolist()
-    insert_row_FR(f"{ticker}_AU_announcements", row, ['Date', 'Links', 'Document Name', 'Ticker', 'Type'])
-"""
 

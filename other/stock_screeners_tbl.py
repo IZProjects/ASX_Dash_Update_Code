@@ -69,17 +69,10 @@ sup_BS_stocks = ['Item']
 sup_CF_stocks = ['Item']
 key_ratios_stocks = ['Item']
 
-#db_path = Paths.database("Financials_DB.db")
-#db_conn = sqlite3.connect(db_path)
-
-#cursor = db_conn.cursor()
-#cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-#tables = cursor.fetchall()
 tables = fetch_tables_for_screener()
 for table in tables:
     try:
       if 'annual_income_statement' in table:
-        #df = pd.read_sql_query("SELECT * FROM '" + table +"'", db_conn)
         df = get_df_tblName(table)
         cols=df.columns.to_list()
         missing_items = [item for item in IS if item not in df['Item'].values]
@@ -91,7 +84,6 @@ for table in tables:
         IS_stocks.append(table[0:6])
 
       elif 'annual_balance_sheet' in table:
-        #df = pd.read_sql_query("SELECT * FROM '" + table +"'", db_conn)
         df = get_df_tblName(table)
         cols=df.columns.to_list()
         missing_items = [item for item in BS if item not in df['Item'].values]
@@ -103,7 +95,6 @@ for table in tables:
         BS_stocks.append(table[0:6])
 
       elif 'annual_cash_flow_statement' in table:
-        #df = pd.read_sql_query("SELECT * FROM '" + table +"'", db_conn)
         df = get_df_tblName(table)
         cols=df.columns.to_list()
         missing_items = [item for item in CF if item not in df['Item'].values]
@@ -115,7 +106,6 @@ for table in tables:
         CF_stocks.append(table[0:6])
 
       elif 'annual_sup_IS' in table:
-        #df = pd.read_sql_query("SELECT * FROM '" + table +"'", db_conn)
         df = get_df_tblName(table)
         cols=df.columns.to_list()
         missing_items = [item for item in sup_IS if item not in df['Item'].values]
@@ -127,7 +117,6 @@ for table in tables:
         sup_IS_stocks.append(table[0:6])
 
       elif 'annual_sup_BS' in table:
-        #df = pd.read_sql_query("SELECT * FROM '" + table +"'", db_conn)
         df = get_df_tblName(table)
         cols=df.columns.to_list()
         missing_items = [item for item in sup_BS if item not in df['Item'].values]
@@ -139,7 +128,6 @@ for table in tables:
         sup_BS_stocks.append(table[0:6])
 
       elif 'annual_sup_CF' in table:
-        #df = pd.read_sql_query("SELECT * FROM '" + table +"'", db_conn)
         df = get_df_tblName(table)
         cols=df.columns.to_list()
         missing_items = [item for item in sup_CF if item not in df['Item'].values]
@@ -151,7 +139,6 @@ for table in tables:
         sup_CF_stocks.append(table[0:6])
 
       elif 'annual_key_ratios' in table:
-        #df = pd.read_sql_query("SELECT * FROM '" + table[0] +"'", db_conn)
         df = get_df_tblName(table)
         cols=df.columns.to_list()
         missing_items = [item for item in key_ratios if item not in df['Item'].values]
@@ -169,6 +156,7 @@ for table in tables:
 
 def check_equal_length(lists):
     return all(len(lst) == len(lists[0]) for lst in lists)
+
 l = [IS_stocks, BS_stocks, CF_stocks, sup_IS_stocks, sup_BS_stocks, sup_CF_stocks, key_ratios_stocks]
 if check_equal_length(l):
     print("All lists have the same length.")
@@ -209,7 +197,6 @@ df_transposed = df_transposed.loc[:, ~df_transposed.columns.duplicated()]
 df_transposed.columns = df_transposed.columns.str.replace(' ', '_')
 df_transposed.columns = [sanitize_column_name(col) for col in df_transposed.columns]
 
-#df_metadata = pd.read_sql_query("SELECT * FROM 'metadataTBL'", db_conn)
 df_metadata = get_df_tblName('metadataTBL')
 df_metadata = df_metadata[['symbol', 'name', 'exchange', 'morningstar_industry', 'morningstar_sector']]
 df_metadata.columns = ['Item', 'Name', 'Exchange', 'Industry', 'Sector']
@@ -234,13 +221,5 @@ df2 = df_transposed[first_column + other_columns[midpoint:]]  # Second half + fi
 write_df_tblName('Screener_TBL1', df1)
 write_df_tblName('Screener_TBL2', df2)
 
-#df1.to_sql('Screener_TBL1', conn, if_exists='replace', index=False)  # Write df1 to Table1
-#df2.to_sql('Screener_TBL2', conn, if_exists='replace', index=False)  # Write df2 to Table2
-######################
-
-#df_transposed.to_sql("Screener_TBL", db_conn, if_exists='replace', index=False)
-#df_transposed = df_transposed.drop_duplicates()
-#df_transposed = df_transposed.reset_index(drop=True)
-#db_conn.close()
 
 print("---------- Finished: other/stock_screeners_tbl.py ----------\n\n\n")

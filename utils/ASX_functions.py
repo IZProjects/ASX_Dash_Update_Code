@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
-#from selenium import webdriver
-from seleniumwire import webdriver
+from selenium import webdriver
+#from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 import pandas as pd
@@ -15,7 +15,7 @@ from selenium.webdriver.chrome.service import Service
 
 load_dotenv()
 
-proxy_host = os.getenv("proxy_host")
+"""proxy_host = os.getenv("proxy_host")
 proxy_port = os.getenv("proxy_port")
 proxy_user = os.getenv("proxy_user")
 proxy_pass = os.getenv("proxy_pass")
@@ -23,26 +23,27 @@ proxy_pass = os.getenv("proxy_pass")
 
 # IPRoyal Proxy Credentials
 proxy = f"{proxy_host}:{proxy_port}"
-proxy_auth = f"{proxy_user}:{proxy_pass}"
+proxy_auth = f"{proxy_user}:{proxy_pass}"""
 
 def connect_to_page(url):
     options = webdriver.ChromeOptions()
-    #options.add_argument('--headless')
+    options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--ignore-certificate-errors')  # <-- Ignore SSL errors
     options.add_argument('--allow-insecure-localhost')  # <-- Allow insecure connections
 
     # Configure selenium-wire proxy settings
-    seleniumwire_options = {
+    """seleniumwire_options = {
         'proxy': {
             'http': f'http://{proxy_auth}@{proxy}',
             'https': f'https://{proxy_auth}@{proxy}',
         }
-    }
+    }"""
 
     # Initialize WebDriver with proxy settings
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, seleniumwire_options=seleniumwire_options)
+    #driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, seleniumwire_options=seleniumwire_options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.execute_cdp_cmd("Network.setBlockedURLs", {
         "urls": ["*.png", "*.jpg", "*.jpeg", "*.gif", "*.css", "*.woff2", "*.svg"]
     })

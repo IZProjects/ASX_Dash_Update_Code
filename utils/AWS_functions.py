@@ -69,5 +69,5 @@ def delete_folder_content(folder):
     print(f"Deleted all objects under prefix '{folder}' in bucket '{folder}'")
 
 
-#upload_file(url, "test.py")
+#upload_file(url, "test.pdf")
 #delete_folder_content(s3_folder)

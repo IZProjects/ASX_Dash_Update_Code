@@ -20,7 +20,7 @@ print("---------- Starting: ASX/ASX_download3Y.py ----------")
 load_dotenv()
 
 # Proxy setup
-proxy_host = os.getenv("proxy_host")
+"""proxy_host = os.getenv("proxy_host")
 proxy_port = os.getenv("proxy_port")
 proxy_user = os.getenv("proxy_user")
 proxy_pass = os.getenv("proxy_pass")
@@ -31,7 +31,7 @@ proxy_auth = f"{proxy_user}:{proxy_pass}"
 proxies = {
     'http': f'http://{proxy_auth}@{proxy}',
     'https': f'http://{proxy_auth}@{proxy}'
-}
+}"""
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
@@ -60,7 +60,8 @@ def download_docs_from_asx(symbol, name, links, dates, parent_path):
     os.makedirs(os.path.join(parent_path, symbol), exist_ok=True)
 
     for i, url in enumerate(links):
-        response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
+        #response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
+        response = requests.get(url, headers=headers, timeout=10)
         if response.status_code == 200:
             clean_name = sanitize_filename(name[i])
             cleaned_date = sanitize_filename(dates[i])
@@ -87,7 +88,8 @@ if not df.empty:
     for i in range(len(df)):
         url = df.at[i, 'Links']
         try:
-            response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
+            #response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
+            response = requests.get(url, headers=headers, timeout=10)
             response.raise_for_status()
 
             symbol = df.at[i, 'Ticker']

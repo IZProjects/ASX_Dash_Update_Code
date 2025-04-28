@@ -1,7 +1,10 @@
 import sys
 import os
-parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.insert(1, parent_path)  # caution: path[0] is reserved for script path (or '' in REPL)
+
+home_path = os.path.expanduser("~")
+sys.path.insert(1, home_path)
+
+
 
 import smtplib
 from email.message import EmailMessage
@@ -45,7 +48,8 @@ def send_email(file_path, subject):
 
     print("Email sent successfully.")
 
-paths = ['~/Projects/ASX_Dashboard/2_hourly_scripts.log', '~/Projects/ASX_Dashboard/end_of_day_scripts.log']
+
+paths = [os.path.join(home_path, "Projects", "ASX_Dashboard", "2_hourly_scripts.log"), os.path.join(home_path, "Projects", "ASX_Dashboard", "end_of_day_scripts.log")]
 subjects = [f"ASX Dashboard Hourly Logs: {date}", f"ASX Dashboard EOD Logs: {date}"]
 
 for i in range(len(paths)):

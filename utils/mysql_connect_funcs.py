@@ -95,11 +95,12 @@ def fetch_tables_for_screener():
         return []
 
 
-def write_df_tblName(table_name,df):
+def write_df_tblName(table_name,df,print_success=True):
     try:
         engine = create_engine(f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}")
         df.to_sql(name=table_name, con=engine, if_exists='replace', index=False)
-        print(f"DataFrame successfully written to table '{table_name}'.")
+        if print_success == True:
+            print(f"DataFrame successfully written to table '{table_name}'.")
     except SQLAlchemyError as e:
         print(f"An error occurred: {e}")
     finally:

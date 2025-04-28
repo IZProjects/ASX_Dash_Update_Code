@@ -57,7 +57,7 @@ for stock in stocks:
         df_daily = stock_data[-260:] if len(stock_data) > 260 else stock_data
         df_daily = df_daily.reset_index(drop=True)
         daily_name = (stockName + '_daily').replace('.', '_')
-        write_df_tblName(daily_name, df_daily)
+        write_df_tblName(daily_name, df_daily, print_success=False)
 
         # Weekly data processing (only at the end of the week)
         if is_end_of_week:
@@ -65,14 +65,14 @@ for stock in stocks:
             df_weekly = df_weekly[-52 * 5:] if len(df_weekly) > 52 * 5 else df_weekly
             df_weekly = df_weekly.reset_index(drop=True)
             weekly_name = (stockName + '_weekly').replace('.', '_')
-            write_df_tblName(weekly_name, df_weekly)
+            write_df_tblName(weekly_name, df_weekly, print_success=False)
 
         # Monthly data processing (only at the end of the month)
         if is_end_of_month:
             df_monthly = get_monthly_data(stock_data)
             df_monthly = df_monthly.reset_index(drop=True)
             monthly_name = (stockName + '_monthly').replace('.', '_')
-            write_df_tblName(monthly_name, df_monthly)
+            write_df_tblName(monthly_name, df_monthly, print_success=False)
 
     except Exception as e:
         print(f"{stock} failed with error: {e}")

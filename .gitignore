@@ -224,3 +224,6 @@ $RECYCLE.BIN/
 # PyPI configuration file
 .pypirc
 >>>>>>> 22099221dbd461fa10862f71b835d6c1f727eca2
+
+# custom
+Bat_Scripts/

@@ -77,6 +77,7 @@ for attempt in range(1, max_retries + 1):
             filename = str(df_difference.at[i,'Document Number'])
             upload_file(url, f'{filename}.pdf')
             awsLinks.append(f"https://{s3_bucket}.s3.ap-southeast-2.amazonaws.com/{s3_folder}/{filename}.pdf")
+            time.sleep(3)
 
         df_difference['awsLinks'] = awsLinks
 

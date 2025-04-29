@@ -24,7 +24,7 @@ def format_number(num):
 
 def process_deep_value(df):
     df = df.sort_values(by='Price_to_Free_Cash_Flow')
-    df = df.head(50)
+    df = df.head(100)
     df = df.sample(n=min(10, len(df)))
     df = df.sort_values(by='Price_to_Free_Cash_Flow').reset_index(drop=True)
     df = df[['Item', 'Price_to_Free_Cash_Flow', 'Debt_to_Equity', 'EBITDA_Margin', 'Market_Cap']]
@@ -38,7 +38,7 @@ def process_deep_value(df):
 
 def process_ROE(df):
     df = df.sort_values(by='Return_on_Equity', ascending=False)
-    df = df.head(50)
+    df = df.head(100)
     df = df.sample(n=min(10, len(df)))
     df = df.sort_values(by='Return_on_Equity', ascending=False).reset_index(drop=True)
     df = df[['Item', 'Return_on_Equity', 'Debt_to_Equity', 'EBITDA_Margin', 'Market_Cap']]
@@ -53,7 +53,7 @@ def process_ROE(df):
 def process_growth(df):
     df['PEG'] = df['Price_to_Earnings'] / df['Net_Income_Growth']
     df = df[(df['PEG'] < 1.5)]
-    df = df.head(50)
+    df = df.head(100)
     df = df.sample(n=min(10, len(df)))
     df = df.sort_values(by='Revenue_Growth', ascending=False).reset_index(drop=True)
     df = df[['Item', 'Revenue_Growth', 'PEG', 'Market_Cap']]

@@ -72,87 +72,83 @@ key_ratios_stocks = ['Item']
 tables = fetch_tables_for_screener()
 for table in tables:
     try:
-      if 'annual_income_statement' in table:
         df = get_df_tblName(table)
-        cols=df.columns.to_list()
-        missing_items = [item for item in IS if item not in df['Item'].values]
-        missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
-        df = pd.concat([df, missing_df], ignore_index=True)
-        df['Item'] = pd.Categorical(df['Item'], categories=IS, ordered=True)
-        df = df.sort_values('Item').reset_index(drop=True)
-        IS_cols.append(df.iloc[:, -1].tolist())
-        IS_stocks.append(table[0:6])
+        if 'Item' in df.columns:
+            if 'annual_income_statement' in table:
+                cols=df.columns.to_list()
+                missing_items = [item for item in IS if item not in df['Item'].values]
+                missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
+                df = pd.concat([df, missing_df], ignore_index=True)
+                df['Item'] = pd.Categorical(df['Item'], categories=IS, ordered=True)
+                df = df.sort_values('Item').reset_index(drop=True)
+                IS_cols.append(df.iloc[:, -1].tolist())
+                IS_stocks.append(table[0:6])
 
-      elif 'annual_balance_sheet' in table:
-        df = get_df_tblName(table)
-        cols=df.columns.to_list()
-        missing_items = [item for item in BS if item not in df['Item'].values]
-        missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
-        df = pd.concat([df, missing_df], ignore_index=True)
-        df['Item'] = pd.Categorical(df['Item'], categories=BS, ordered=True)
-        df = df.sort_values('Item').reset_index(drop=True)
-        BS_cols.append(df.iloc[:, -1].tolist())
-        BS_stocks.append(table[0:6])
+            elif 'annual_balance_sheet' in table:
+                cols=df.columns.to_list()
+                missing_items = [item for item in BS if item not in df['Item'].values]
+                missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
+                df = pd.concat([df, missing_df], ignore_index=True)
+                df['Item'] = pd.Categorical(df['Item'], categories=BS, ordered=True)
+                df = df.sort_values('Item').reset_index(drop=True)
+                BS_cols.append(df.iloc[:, -1].tolist())
+                BS_stocks.append(table[0:6])
 
-      elif 'annual_cash_flow_statement' in table:
-        df = get_df_tblName(table)
-        cols=df.columns.to_list()
-        missing_items = [item for item in CF if item not in df['Item'].values]
-        missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
-        df = pd.concat([df, missing_df], ignore_index=True)
-        df['Item'] = pd.Categorical(df['Item'], categories=CF, ordered=True)
-        df = df.sort_values('Item').reset_index(drop=True)
-        CF_cols.append(df.iloc[:, -1].tolist())
-        CF_stocks.append(table[0:6])
+            elif 'annual_cash_flow_statement' in table:
+                cols=df.columns.to_list()
+                missing_items = [item for item in CF if item not in df['Item'].values]
+                missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
+                df = pd.concat([df, missing_df], ignore_index=True)
+                df['Item'] = pd.Categorical(df['Item'], categories=CF, ordered=True)
+                df = df.sort_values('Item').reset_index(drop=True)
+                CF_cols.append(df.iloc[:, -1].tolist())
+                CF_stocks.append(table[0:6])
 
-      elif 'annual_sup_IS' in table:
-        df = get_df_tblName(table)
-        cols=df.columns.to_list()
-        missing_items = [item for item in sup_IS if item not in df['Item'].values]
-        missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
-        df = pd.concat([df, missing_df], ignore_index=True)
-        df['Item'] = pd.Categorical(df['Item'], categories=sup_IS, ordered=True)
-        df = df.sort_values('Item').reset_index(drop=True)
-        sup_IS_cols.append(df.iloc[:, -1].tolist())
-        sup_IS_stocks.append(table[0:6])
+            elif 'annual_sup_IS' in table:
+                cols=df.columns.to_list()
+                missing_items = [item for item in sup_IS if item not in df['Item'].values]
+                missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
+                df = pd.concat([df, missing_df], ignore_index=True)
+                df['Item'] = pd.Categorical(df['Item'], categories=sup_IS, ordered=True)
+                df = df.sort_values('Item').reset_index(drop=True)
+                sup_IS_cols.append(df.iloc[:, -1].tolist())
+                sup_IS_stocks.append(table[0:6])
 
-      elif 'annual_sup_BS' in table:
-        df = get_df_tblName(table)
-        cols=df.columns.to_list()
-        missing_items = [item for item in sup_BS if item not in df['Item'].values]
-        missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
-        df = pd.concat([df, missing_df], ignore_index=True)
-        df['Item'] = pd.Categorical(df['Item'], categories=sup_BS, ordered=True)
-        df = df.sort_values('Item').reset_index(drop=True)
-        sup_BS_cols.append(df.iloc[:, -1].tolist())
-        sup_BS_stocks.append(table[0:6])
+            elif 'annual_sup_BS' in table:
+                cols=df.columns.to_list()
+                missing_items = [item for item in sup_BS if item not in df['Item'].values]
+                missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
+                df = pd.concat([df, missing_df], ignore_index=True)
+                df['Item'] = pd.Categorical(df['Item'], categories=sup_BS, ordered=True)
+                df = df.sort_values('Item').reset_index(drop=True)
+                sup_BS_cols.append(df.iloc[:, -1].tolist())
+                sup_BS_stocks.append(table[0:6])
 
-      elif 'annual_sup_CF' in table:
-        df = get_df_tblName(table)
-        cols=df.columns.to_list()
-        missing_items = [item for item in sup_CF if item not in df['Item'].values]
-        missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
-        df = pd.concat([df, missing_df], ignore_index=True)
-        df['Item'] = pd.Categorical(df['Item'], categories=sup_CF, ordered=True)
-        df = df.sort_values('Item').reset_index(drop=True)
-        sup_CF_cols.append(df.iloc[:, -1].tolist())
-        sup_CF_stocks.append(table[0:6])
+            elif 'annual_sup_CF' in table:
+                cols=df.columns.to_list()
+                missing_items = [item for item in sup_CF if item not in df['Item'].values]
+                missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
+                df = pd.concat([df, missing_df], ignore_index=True)
+                df['Item'] = pd.Categorical(df['Item'], categories=sup_CF, ordered=True)
+                df = df.sort_values('Item').reset_index(drop=True)
+                sup_CF_cols.append(df.iloc[:, -1].tolist())
+                sup_CF_stocks.append(table[0:6])
 
-      elif 'annual_key_ratios' in table:
-        df = get_df_tblName(table)
-        cols=df.columns.to_list()
-        missing_items = [item for item in key_ratios if item not in df['Item'].values]
-        missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
-        df = pd.concat([df, missing_df], ignore_index=True)
-        df['Item'] = pd.Categorical(df['Item'], categories=key_ratios, ordered=True)
-        df = df.sort_values('Item').reset_index(drop=True)
-        key_ratios_cols.append(df.iloc[:, -1].tolist())
-        key_ratios_stocks.append(table[0:6])
+            elif 'annual_key_ratios' in table:
+                cols=df.columns.to_list()
+                missing_items = [item for item in key_ratios if item not in df['Item'].values]
+                missing_df = pd.DataFrame({'Item': missing_items, cols[-1]: '0'})
+                df = pd.concat([df, missing_df], ignore_index=True)
+                df['Item'] = pd.Categorical(df['Item'], categories=key_ratios, ordered=True)
+                df = df.sort_values('Item').reset_index(drop=True)
+                key_ratios_cols.append(df.iloc[:, -1].tolist())
+                key_ratios_stocks.append(table[0:6])
 
-      else:
-        print("incorrect table input")
+            else:
+                print("incorrect table input")
     except Exception as e:
         print(f"An error has occurred: {e}")
+
 
 def check_equal_length(lists):
     return all(len(lst) == len(lists[0]) for lst in lists)

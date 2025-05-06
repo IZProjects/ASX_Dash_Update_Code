@@ -12,20 +12,15 @@ password = os.getenv("mysql_password")
 host = os.getenv("mysql_host")
 database = os.getenv("mysql_database")
 
+
 def get_df_tblName(table):
     try:
-        # Create a connection string
         connection_string = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
-
-        # Create a SQLAlchemy engine
         engine = create_engine(connection_string)
-
-        # Query the table and load into DataFrame
-        query = f"SELECT * FROM {table}"
-        df = pd.read_sql(query, engine)
-
+        with engine.connect() as connection:
+            df = pd.read_sql(f"SELECT * FROM {table}", connection)
+        engine.dispose()
         return df
-
     except Exception as e:
         print(f"An error occurred: {e}")
         return pd.DataFrame()
@@ -33,15 +28,11 @@ def get_df_tblName(table):
 
 def get_df_query(query):
     try:
-        # Create a connection string
         connection_string = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
-
-        # Create a SQLAlchemy engine
         engine = create_engine(connection_string)
-
-        # Execute the query and load into DataFrame
-        df = pd.read_sql(query, engine)
-
+        with engine.connect() as connection:
+            df = pd.read_sql(query, connection)
+        engine.dispose()
         return df
 
     except Exception as e:
@@ -50,16 +41,11 @@ def get_df_query(query):
 
 def get_cursor(query, params=None):
     try:
-        # Create a connection string
         connection_string = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
-
-        # Create a SQLAlchemy engine
         engine = create_engine(connection_string)
-
-        # Connect to the database and execute the query with parameters
         with engine.connect() as connection:
             result = connection.execute(text(query), params).fetchone()  # Fetch the first result
-
+        engine.dispose()
         return result
 
     except Exception as e:

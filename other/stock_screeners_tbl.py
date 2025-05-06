@@ -7,6 +7,7 @@ import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 import re
 from utils.mysql_connect_funcs import fetch_tables_for_screener, get_df_tblName, write_df_tblName
+import numpy as np
 
 print("---------- Starting: other/stock_screeners_tbl.py ----------")
 
@@ -49,6 +50,16 @@ IS = ['Revenue', 'Cost of Goods Sold', 'Gross Profit', 'Selling, General and Adm
  'EPS - Diluted', 'Number of Basic Shares', 'Number of Shares Diluted', 'Total Interest Income', 'Total Interest Expense', 'Total Non-Interest Revenue',
  'Provision for Credit Losses', 'Net Income after Credit Loss Provisions', 'Total Non-Interest Expense', 'Premiums Earned', 'Net Investment Income', 'Fees and Other Income',
  'Net Policy Holder Claims Expense', 'Policy Acquasition Expense']
+
+percentages = ['Gross Margin', 'EBITDA Margin', 'Operating Margin', 'Pretax Margin', 'Net Income Margin', 'Revenue Growth', 'Gross Profit Growth', 'EBITDA Growth', 'Operating Income Growth', 'Pre-Tax Income Growth',
+               'Net Income Growth', 'Diluted EPS Growth', 'Number of Diluted Shares Growth', 'Net Interest Margin', 'Net Interest Income Growth',
+               'Underwriting Margin', 'Policy Revenue Growth','Income Tax Rate', 'Cash & Cash Equivilants Growth', 'Plant, Property and Equipment Growth', 'Total Asset Growth', 'Total Equity Growth', 'Capital Expenditure Growth',
+               'Gross Loans Growth', 'Net Loans Growth', 'Deposits Growth','Earning Assets Growth', 'Premiums Growth',
+               'Total Investments Growth', 'Free Cash Flow Margin', 'Free Cash Flow Growth','Operating Cash Flow Growth','Capital Expenditure Growth','Payout Ratio',
+               'Dividends per Share Growth', 'Return on Assets', 'Return on Equity', 'Return on Invested Capital', 'Return on Capital Employed',
+               'Return on Average Tangible Common Equity', 'Number of Diluted Shares Growth', 'Return on Investment', 'Average 5 Yr Return on Invested Capital']
+
+percentages = [item.replace(' ', '_') for item in percentages]
 
 def sanitize_column_name(col_name):
     return re.sub(r'\W+', '_', col_name)
@@ -146,6 +157,7 @@ for table in tables:
 
             else:
                 print("incorrect table input")
+
     except Exception as e:
         print(f"An error has occurred: {e}")
 
@@ -210,9 +222,18 @@ other_columns = columns[1:]    # All columns except the first
 # Find the midpoint of the remaining columns
 midpoint = len(other_columns) // 2
 
+
+for col in percentages:
+    if col in df_transposed.columns:
+        df_transposed[col] = df_transposed[col].apply(
+            lambda x: float(x.replace('%', '')) / 100 if isinstance(x, str) and '%' in x else np.nan
+        )
+
+
 # Split into two DataFrames
 df1 = df_transposed[first_column + other_columns[:midpoint]]  # First half + first column
 df2 = df_transposed[first_column + other_columns[midpoint:]]  # Second half + first column
+
 
 write_df_tblName('Screener_TBL1', df1)
 write_df_tblName('Screener_TBL2', df2)

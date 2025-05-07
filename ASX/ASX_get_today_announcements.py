@@ -45,55 +45,56 @@ for attempt in range(1, max_retries + 1):
         df_difference = df_new.merge(df_existing, how="left", indicator=True).query('_merge == "left_only"').drop(columns=["_merge"])
         df_difference = df_difference.reset_index(drop=True)
         df_differenceTBL = df_difference.copy()
+        if df_difference.empty:
+            print("no updates")
+            break
+        else:
+            df_combined = pd.concat([df_existing, df_difference]).reset_index(drop=True)
+            df_combinedTBL = df_combined.copy()
 
+            tickers = df_difference['Ticker'].to_list()
+            tickers = [ticker + ".AU" for ticker in tickers]
+            df_prices = filter_table('real_time', 'code', tickers)
+            df_prices['code'] = df_prices['code'].str.replace('.AU', '', regex=False)
+            df_prices['change_p'] = df_prices['change_p'].apply(lambda x: x[:-2] if len(x) > 5 else x)
+            df_difference['Price Change (%)'] = df_difference['Ticker'].map(df_prices.set_index('code')['change_p'])
+            df_difference = df_difference.dropna().drop_duplicates().reset_index(drop=True)
+            df_difference['Document Name'] = df_difference['Document Name'].str.upper()
+            df_difference['Type'] = df_difference['Type'].str.upper()
+            df_difference['Price Change (%)'] = df_difference['Price Change (%)'].astype(float)
+            df_difference['Ticker'] = df_difference['Ticker'].apply(lambda x: f'[{x}](/02-companyoverview?data={x}_AU)')
 
-        df_combined = pd.concat([df_existing, df_difference]).reset_index(drop=True)
-        df_combinedTBL = df_combined.copy()
+            existing_numbers = set(df_existing2['Document Number'].astype(int))
+            all_possible = set(range(1, 10000))
+            available_numbers = list(all_possible - existing_numbers)
+            if len(df_difference) > len(available_numbers):
+                raise ValueError("Not enough unique document numbers available.")
+            new_numbers = np.random.choice(available_numbers, size=len(df_difference), replace=False)
+            df_difference['Document Number'] = [str(num).zfill(4) for num in new_numbers]
 
+            awsLinks = []
+            for i in range(len(df_difference)):
+                url = df_difference.at[i,'Links']
+                filename = str(df_difference.at[i,'Document Number'])
+                upload_file(url, f'{filename}.pdf')
+                awsLinks.append(f"https://{s3_bucket}.s3.ap-southeast-2.amazonaws.com/{s3_folder}/{filename}.pdf")
+                time.sleep(3)
 
-        tickers = df_difference['Ticker'].to_list()
-        tickers = [ticker + ".AU" for ticker in tickers]
-        df_prices = filter_table('real_time', 'code', tickers)
-        df_prices['code'] = df_prices['code'].str.replace('.AU', '', regex=False)
-        df_prices['change_p'] = df_prices['change_p'].apply(lambda x: x[:-2] if len(x) > 5 else x)
-        df_difference['Price Change (%)'] = df_difference['Ticker'].map(df_prices.set_index('code')['change_p'])
-        df_difference = df_difference.dropna().drop_duplicates().reset_index(drop=True)
-        df_difference['Document Name'] = df_difference['Document Name'].str.upper()
-        df_difference['Type'] = df_difference['Type'].str.upper()
-        df_difference['Price Change (%)'] = df_difference['Price Change (%)'].astype(float)
-        df_difference['Ticker'] = df_difference['Ticker'].apply(lambda x: f'[{x}](/02-companyoverview?data={x}_AU)')
+            df_difference['awsLinks'] = awsLinks
 
-        existing_numbers = set(df_existing2['Document Number'].astype(int))
-        all_possible = set(range(1, 10000))
-        available_numbers = list(all_possible - existing_numbers)
-        if len(df_difference) > len(available_numbers):
-            raise ValueError("Not enough unique document numbers available.")
-        new_numbers = np.random.choice(available_numbers, size=len(df_difference), replace=False)
-        df_difference['Document Number'] = [str(num).zfill(4) for num in new_numbers]
+            df_difference["Document Name"] = df_difference.apply(lambda row: f'[{row["Document Name"]}]({row["awsLinks"]})', axis=1)
+            df_difference = df_difference.drop(columns=["Links"])
+            df_difference = df_difference.drop(columns=["awsLinks"])
+            cols = ["Date", "Ticker"] + [col for col in df_difference.columns if col not in ["Date", "Ticker"]]
+            df_difference = df_difference[cols]
 
-        awsLinks = []
-        for i in range(len(df_difference)):
-            url = df_difference.at[i,'Links']
-            filename = str(df_difference.at[i,'Document Number'])
-            upload_file(url, f'{filename}.pdf')
-            awsLinks.append(f"https://{s3_bucket}.s3.ap-southeast-2.amazonaws.com/{s3_folder}/{filename}.pdf")
-            time.sleep(3)
+            df_combined2 = pd.concat([df_existing2, df_difference]).reset_index(drop=True)
 
-        df_difference['awsLinks'] = awsLinks
-
-        df_difference["Document Name"] = df_difference.apply(lambda row: f'[{row["Document Name"]}]({row["awsLinks"]})', axis=1)
-        df_difference = df_difference.drop(columns=["Links"])
-        df_difference = df_difference.drop(columns=["awsLinks"])
-        cols = ["Date", "Ticker"] + [col for col in df_difference.columns if col not in ["Date", "Ticker"]]
-        df_difference = df_difference[cols]
-
-        df_combined2 = pd.concat([df_existing2, df_difference]).reset_index(drop=True)
-
-        write_df_tblName('announcements_difference', df_differenceTBL)
-        write_df_tblName('announcements_today', df_combinedTBL)
-        write_df_tblName("announcements_today_wPrice", df_combined2)
-        print("---------- Finished: ASX/ASX_get_today_announcements.py ----------\n\n\n")
-        break
+            write_df_tblName('announcements_difference', df_differenceTBL)
+            write_df_tblName('announcements_today', df_combinedTBL)
+            write_df_tblName("announcements_today_wPrice", df_combined2)
+            print("---------- Finished: ASX/ASX_get_today_announcements.py ----------\n\n\n")
+            break
 
 
     except Exception as e:

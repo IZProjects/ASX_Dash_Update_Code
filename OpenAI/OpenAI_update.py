@@ -86,15 +86,15 @@ else:
         data = row.tolist()
         insert_row_SC('segmentResultsExtract', data, ['ID', 'ticker', 'year', 'content'])
 
-    ####### segment description code #######
-    assistantID = 'asst_itFTGt6IWtVjfqCBrdVMfLdk'
+    ####### business profile code #######
+    assistantID = 'asst_6xnQG5tz74YSLYBmpoZUWRAa'
     rows=[]
     for i in range(len(tickers)):
         try:
             file_paths, years = get_files(os.path.join(parent_path, "annual_reports"), tickers[i])
             for j in range(len(file_paths)):
                 try:
-                    prompt = "Please get a description of each of the business segments in the company based on the attached file. \n"
+                    prompt = "Please go through the attached document and write me a detailed report on what products/services the company sells, products/services that are in production, what are the business segments and how much of the company are they, what the business model is, who are the company's customers, who are the company's suppliers if there are any, what geographical regions the company operates in and what is there exposure to these regions, what market forces are affecting the business, what are the comapny's growth drivers and what are the key business risks the comapny faces. \n"
                     message = run_assistant(file_paths[j], prompt, assistantID)
                     row = [tickers[i], message]
                     rows.append(row)
@@ -103,11 +103,16 @@ else:
         except Exception as e:
             print(f"{tickers[i]} failed:{e}")
 
-    df_segmentDescription = pd.DataFrame(rows, columns=['ticker', 'content'])
+    df_companyDetails = pd.DataFrame(rows, columns=['ticker', 'content'])
 
-    for index, row in df_segmentDescription.iterrows():
+
+    prompt = "The text below is an answer given to the question 'What does the company do'. Please replace any text that suggest that an answer could not be found and any requests for additional information with 'No information is available'. Then remove any text before the headings. Then reword it to remove any conversational elements from the text or anything tht requests for additional input:\n"
+    system = "You are a helpful assistant"
+    df_companyDetails = run_model_over_df(df_companyDetails,60,prompt,system)
+
+    for index, row in df_companyDetails.iterrows():
         data = row.tolist()
-        replace_row('SegmentDescription', data, ['ticker', 'content'])
+        replace_row('companyDetails', data, ['ticker', 'content'])
 
     clear_all()
 

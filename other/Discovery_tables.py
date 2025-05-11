@@ -28,7 +28,7 @@ def process_deep_value(df):
     df = df.sample(n=min(10, len(df)))
     df = df.sort_values(by='Price_to_Free_Cash_Flow').reset_index(drop=True)
     df = df[['Item', 'Price_to_Free_Cash_Flow', 'Debt_to_Equity', 'EBITDA_Margin', 'Market_Cap']]
-    df['EBITDA_Margin'] = (df['EBITDA_Margin'] * 100).map('{:.2f}%'.format)
+    df['EBITDA_Margin'] = (df['EBITDA_Margin']*100).map('{:.2f}%'.format)
     df['Market_Cap'] = df['Market_Cap'].apply(format_number)
     df['Price_to_Free_Cash_Flow'] = df['Price_to_Free_Cash_Flow'].round(2)
     df['Debt_to_Equity'] = df['Debt_to_Equity'].round(2)
@@ -42,8 +42,8 @@ def process_ROE(df):
     df = df.sample(n=min(10, len(df)))
     df = df.sort_values(by='Return_on_Equity', ascending=False).reset_index(drop=True)
     df = df[['Item', 'Return_on_Equity', 'Debt_to_Equity', 'EBITDA_Margin', 'Market_Cap']]
-    df['EBITDA_Margin'] = (df['EBITDA_Margin'] * 100).map('{:.2f}%'.format)
-    df['Return_on_Equity'] = (df['Return_on_Equity'] * 100).map('{:.2f}%'.format)
+    df['EBITDA_Margin'] = (df['EBITDA_Margin']*100).map('{:.2f}%'.format)
+    df['Return_on_Equity'] = (df['Return_on_Equity']*100).map('{:.2f}%'.format)
     df['Market_Cap'] = df['Market_Cap'].apply(format_number)
     df['Debt_to_Equity'] = df['Debt_to_Equity'].round(2)
     df['Item'] = df['Item'].apply(lambda x: f'[{x[0:3]}](/02-companyoverview?data={x})')
@@ -58,7 +58,7 @@ def process_growth(df):
     df = df.sort_values(by='Revenue_Growth', ascending=False).reset_index(drop=True)
     df = df[['Item', 'Revenue_Growth', 'PEG', 'Market_Cap']]
     df['Market_Cap'] = df['Market_Cap'].apply(format_number)
-    df['Revenue_Growth'] = (df['Revenue_Growth'] * 100).map('{:.2f}%'.format)
+    df['Revenue_Growth'] = (df['Revenue_Growth']*100).map('{:.2f}%'.format)
     df['PEG'] = df['PEG'].round(2)
     df['Item'] = df['Item'].apply(lambda x: f'[{x[0:3]}](/02-companyoverview?data={x})')
     df.columns = ['Ticker', 'Revenue Growth', 'PEG',  'Market Cap']
@@ -69,10 +69,10 @@ df = get_df_tblName("Screener_TBL2")
 df['Price_to_Free_Cash_Flow'] = pd.to_numeric(df['Price_to_Free_Cash_Flow'], errors='coerce')
 df['Debt_to_Equity'] = pd.to_numeric(df['Debt_to_Equity'], errors='coerce')
 df['Price_to_Earnings'] = pd.to_numeric(df['Price_to_Earnings'], errors='coerce')
-df['EBITDA_Margin'] = pd.to_numeric(df['EBITDA_Margin'].str.replace('%', ''), errors='coerce') / 100
-df['Return_on_Equity'] = pd.to_numeric(df['Return_on_Equity'].str.replace('%', ''), errors='coerce') / 100
-df['Revenue_Growth'] = pd.to_numeric(df['Revenue_Growth'].str.replace('%', ''), errors='coerce') / 100
-df['Net_Income_Growth'] = pd.to_numeric(df['Net_Income_Growth'].str.replace('%', ''), errors='coerce') / 100
+df['EBITDA_Margin'] = pd.to_numeric(df['EBITDA_Margin'], errors='coerce')
+df['Return_on_Equity'] = pd.to_numeric(df['Return_on_Equity'], errors='coerce')
+df['Revenue_Growth'] = pd.to_numeric(df['Revenue_Growth'], errors='coerce')
+df['Net_Income_Growth'] = pd.to_numeric(df['Net_Income_Growth'], errors='coerce')
 df['Market_Cap'] = pd.to_numeric(df['Market_Cap'], errors='coerce')
 
 
